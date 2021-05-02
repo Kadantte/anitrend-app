@@ -142,7 +142,7 @@ dependencies {
     implementation 'com.ogaclejapan.smarttablayout:library:1.7.0'
 
     /** Java Streams Port */
-    implementation 'com.annimon:stream:1.2.1'
+    implementation 'com.annimon:stream:1.2.2'
 
     /** Highly Customizable Video Player */
     implementation 'cn.jzvd:jiaozivideoplayer:7.0_preview'
