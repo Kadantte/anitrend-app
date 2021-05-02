@@ -9,7 +9,7 @@ buildscript {
         versionName = '1.4.7'
         butterKnife = '8.8.1'
         glide = '4.9.0'
-        retrofit = '2.5.0'
+        retrofit = '2.6.2'
         supportLibrary = '27.1.1'
         firebase = '16.0.8'
         objectBox = '2.3.3'
