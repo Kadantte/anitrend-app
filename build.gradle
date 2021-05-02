@@ -15,7 +15,7 @@ buildscript {
         objectBox = '2.3.3'
         architecture = '1.1.1'
         workManager = '1.0.1'
-        emojify = '1.4'
+        emojify = '1.5.3'
         kotlin = '1.3.31'
         // testing libraries
         mockito = '2.18.3'
