@@ -7,7 +7,7 @@ buildscript {
         minSdk = 17
         versionCode = 111
         versionName = '1.4.7'
-        butterKnife = '8.8.1'
+        butterKnife = '10.2.3'
         glide = '4.9.0'
         retrofit = '2.5.0'
         supportLibrary = '27.1.1'
