@@ -17,10 +17,8 @@ import android.widget.Toast
 import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityManagerCompat
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import com.annimon.stream.IntPair
 import com.annimon.stream.Optional
@@ -32,6 +30,7 @@ import com.mxt.anitrend.extension.getCompatColorAttr
 import com.mxt.anitrend.util.collection.ComparatorUtil
 import com.mxt.anitrend.view.activity.base.ImagePreviewActivity
 import okhttp3.Cache
+import timber.log.Timber
 import java.io.File
 import java.util.*
 import kotlin.math.min
@@ -69,7 +68,7 @@ object CompatUtil {
         try {
             cache = Cache(File(context.cacheDir, "response-cache"), CACHE_LIMIT.toLong())
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e)
         }
 
         return cache
@@ -143,7 +142,7 @@ object CompatUtil {
     )
     fun getTintedDrawable(context: Context, @DrawableRes resource: Int): Drawable {
         val drawable = DrawableCompat.wrap(Objects.requireNonNull<Drawable>(AppCompatResources.getDrawable(context, resource))).mutate()
-        DrawableCompat.setTint(drawable, getColorFromAttr(context, R.attr.titleColor))
+        DrawableCompat.setTint(drawable, context.getCompatColorAttr(R.attr.titleColor))
         return drawable
     }
 
@@ -207,7 +206,7 @@ object CompatUtil {
     )
     fun getDrawableTintAttr(context: Context, @DrawableRes resource: Int, @AttrRes attribute: Int): Drawable {
         val drawable = DrawableCompat.wrap(Objects.requireNonNull<Drawable>(AppCompatResources.getDrawable(context, resource))).mutate()
-        DrawableCompat.setTint(drawable, getColorFromAttr(context, attribute))
+        DrawableCompat.setTint(drawable, context.getCompatColorAttr(attribute))
         return drawable
     }
 
@@ -262,8 +261,8 @@ object CompatUtil {
     }
 
     fun isLightTheme(settings: Settings): Boolean {
-        @KeyUtil.ApplicationTheme val theme: String? = settings.theme
-        return theme == null || theme == KeyUtil.THEME_LIGHT
+        @KeyUtil.ApplicationTheme val theme: String = settings.theme
+        return theme == KeyUtil.THEME_LIGHT
     }
 
     fun dipToPx(dpValue: Float): Int {
@@ -504,7 +503,8 @@ object CompatUtil {
                         result.append(word)
                     else {
                         val starting = Character.toUpperCase(word[0])
-                        result.append(starting).append(word.substring(1).toLowerCase())
+                        result.append(starting).append(word.substring(1)
+                            .lowercase(Locale.getDefault()))
                     }
                 }
                 if (index != word.length - 1)
@@ -524,7 +524,7 @@ object CompatUtil {
     }
 
     fun <T : Collection<*>> isEmpty(collection: T?): Boolean {
-        return collection == null || collection.isEmpty()
+        return collection.isNullOrEmpty()
     }
 
     fun <T : Collection<*>> sizeOf(collection: T?): Int {

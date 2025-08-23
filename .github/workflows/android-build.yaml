@@ -1,4 +1,4 @@
-name: Android test and build
+name: android-build
 
 on:
   push:
@@ -6,64 +6,70 @@ on:
       - '*'
 
 jobs:
-  test:
-    name: Test 
+  android-build:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - name: Configure dummy files
-      run: |
-        mv app/.travic-ci/google-services.json app/google-services.json
-        mv app/.travic-ci/secrets app/.config/secrets.properties
-    - name: Test with Gradle
-      run: ./gradlew test --stacktrace
-
-  build:
-    name: Build APK
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: set up JDK 1.8
-        uses: actions/setup-java@v1
+      - uses: actions/checkout@v5
+      - name: Validate Changelog Character Limits
+        run: bash .github/scripts/validate-changelogs.sh
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
         with:
-          java-version: 1.8
-      - name: Prepare secret files
+          java-version: '21'
+          distribution: 'zulu'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/develop' }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.3'
+          bundler-cache: true
+      - name: Extract version info
+        id: version
         run: |
-          echo "${{ secrets.KEYSTORE }}" > appstore.keystore.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSPHRASE }}" --batch appstore.keystore.asc > app/appstore.keystore
-          echo "${{ secrets.KEYSTORE_PROPERTIES }}" > keystore.properties.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_PROPERTIES_PASSPHRASE }}" --batch keystore.properties.asc > app/.config/keystore.properties
-          echo "${{ secrets.SECRETS_PROPERTIES }}" > secrets.properties.asc
-          gpg -d --passphrase "${{ secrets.SECRETS_PROPERTIES_PASSPHRASE }}" --batch secrets.properties.asc > app/.config/secrets.properties
-          echo "${{ secrets.GOOGLE_SERVICES }}" > google-services.json.asc
-          gpg -d --passphrase "${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}" --batch google-services.json.asc > app/google-services.json
-      - name: Fetch tags
-        run: git fetch --tags --force
+          VERSION_CODE=$(grep '^code=' gradle/version.properties | cut -d'=' -f2)
+          VERSION_NAME=$(grep '^version=' gradle/version.properties | cut -d'=' -f2)
+          echo "version_code=${VERSION_CODE}" >> $GITHUB_OUTPUT
+          echo "version_name=${VERSION_NAME}" >> $GITHUB_OUTPUT
+          echo "Version Code: ${VERSION_CODE}"
+          echo "Version Name: ${VERSION_NAME}"
       - name: Build release APKs
-        run: ./gradlew clean assembleRelease
+        run: bash .github/scripts/fastlane.sh
+        env:
+          VERSION_CODE: ${{ steps.version.outputs.version_code }}
+          VERSION_NAME: ${{ steps.version.outputs.version_name }}
+          KEYSTORE: ${{ secrets.KEYSTORE }}
+          KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
+          KEYSTORE_PROPERTIES: ${{ secrets.KEYSTORE_PROPERTIES }}
+          KEYSTORE_PROPERTIES_PASSPHRASE: ${{ secrets.KEYSTORE_PROPERTIES_PASSPHRASE }}
+          SECRETS_PROPERTIES: ${{ secrets.SECRETS_PROPERTIES }}
+          SECRETS_PROPERTIES_PASSPHRASE: ${{ secrets.SECRETS_PROPERTIES_PASSPHRASE }}
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+          GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
+          PLAYSTORE_SERVICE_ACCOUNT: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT }}
+          PLAYSTORE_SERVICE_ACCOUNT_PASSPHRASE: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_PASSPHRASE }}
       - name: Publish PlayStore APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
+        if: always() # always run even if the previous step fails
         with:
           name: app-release
           path: app/build/outputs/apk/app/release
       - name: Publish Github APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
+        if: always() # always run even if the previous step fails
         with:
           name: app-github-release
           path: app/build/outputs/apk/github/release
-      - uses: ericcornelissen/git-tag-annotation-action@v1
-        id: tag_data
-      - uses: marvinpinto/action-automatic-releases@latest
+      - name: Upload APKs to GitHub Release
+        if: always() # always run even if the previous step fails
+        run: |
+          files=$(find app/build/outputs/apk/ -type f -name '*.apk')
+          gh release upload "${{ github.ref_name }}" $files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v5
+        if: always() # always run even if the previous step fails
         with:
-          title: "${{ steps.tag_data.outputs.git-tag-annotation }}"
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: true
-          files: |
-            app/build/outputs/apk/**/release/*.apk
+          report_paths: '**/build/test-results/**/TEST-*.xml'

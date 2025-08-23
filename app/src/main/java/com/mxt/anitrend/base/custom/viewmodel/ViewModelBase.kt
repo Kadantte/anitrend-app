@@ -11,10 +11,9 @@ import com.mxt.anitrend.base.interfaces.event.ResponseCallback
 import com.mxt.anitrend.base.interfaces.event.RetroCallback
 import com.mxt.anitrend.util.KeyUtil
 import com.mxt.anitrend.util.graphql.apiError
-import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
-import kotlin.coroutines.CoroutineContext
+import timber.log.Timber
 
 /**
  * Created by max on 2017/10/14.
@@ -34,6 +33,11 @@ class ViewModelBase<T>: ViewModel(), RetroCallback<T> {
     private lateinit var tokenMessage: String
 
     val params = Bundle()
+
+    /**
+     * @return A live data snapshot value [T]? at the time this function is invoked
+     */
+    fun snapshot(): T? = model.value
 
     fun setContext(context: Context?) {
         context?.apply {
@@ -103,6 +107,6 @@ class ViewModelBase<T>: ViewModel(), RetroCallback<T> {
      */
     override fun onFailure(call: Call<T>, throwable: Throwable) {
         state?.showEmpty(throwable.message ?: errorMessage)
-        throwable.printStackTrace()
+        Timber.e(throwable)
     }
 }

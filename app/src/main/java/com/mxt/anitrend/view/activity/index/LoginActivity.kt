@@ -37,7 +37,7 @@ class LoginActivity : ActivityBase<User, BasePresenter>(), View.OnClickListener 
     private lateinit var binding: ActivityLoginBinding
     private var model: User? = null
 
-    private val workInfoObserver = Observer<WorkInfo> { workInfo ->
+    private val workInfoObserver = Observer<WorkInfo?> { workInfo ->
         if (workInfo != null && workInfo.state.isFinished) {
             val outputData = workInfo.outputData
             if (outputData.getBoolean(KeyUtil.arg_model, false)) {
@@ -154,8 +154,7 @@ class LoginActivity : ActivityBase<User, BasePresenter>(), View.OnClickListener 
                 try {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(WebFactory.API_AUTH_LINK)))
                 } catch (e: Exception) {
-                    e.printStackTrace()
-                    Timber.tag(TAG).e(e.localizedMessage)
+                    Timber.e(e)
                     NotifyUtil.makeText(this, R.string.text_unknown_error, Toast.LENGTH_SHORT).show()
                 }
 

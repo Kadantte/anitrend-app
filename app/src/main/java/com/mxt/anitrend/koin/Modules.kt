@@ -2,7 +2,7 @@ package com.mxt.anitrend.koin
 
 import android.app.NotificationManager
 import android.content.Context
-import android.text.util.Linkify
+import android.webkit.WebSettings
 import co.anitrend.support.markdown.center.CenterPlugin
 import co.anitrend.support.markdown.core.CorePlugin
 import co.anitrend.support.markdown.ephasis.EmphasisPlugin
@@ -16,6 +16,9 @@ import co.anitrend.support.markdown.strike.StrikeThroughPlugin
 import co.anitrend.support.markdown.webm.WebMPlugin
 import co.anitrend.support.markdown.youtube.YouTubePlugin
 import com.bumptech.glide.Glide
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.chuckerteam.chucker.api.RetentionManager
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.GsonBuilder
@@ -27,6 +30,7 @@ import com.mxt.anitrend.base.plugin.image.ImageConfigurationPlugin
 import com.mxt.anitrend.base.plugin.text.TextConfigurationPlugin
 import com.mxt.anitrend.model.api.converter.AniGraphConverter
 import com.mxt.anitrend.model.api.interceptor.AuthInterceptor
+import com.mxt.anitrend.model.api.interceptor.ClientInterceptor
 import com.mxt.anitrend.model.entity.MyObjectBox
 import com.mxt.anitrend.presenter.base.BasePresenter
 import com.mxt.anitrend.presenter.fragment.MediaPresenter
@@ -49,8 +53,11 @@ import io.noties.markwon.ext.tasklist.TaskListPlugin
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.glide.GlideImagesPlugin
 import io.noties.markwon.linkify.LinkifyPlugin
+import io.wax911.emojify.EmojiManager
+import io.wax911.emojify.serializer.gson.GsonDeserializer
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import timber.log.Timber
 
@@ -96,6 +103,18 @@ private val coreModule = module {
             ) as NotificationManager?
         )
     }
+    single(createdAtStart = true) {
+        EmojiManager.create(
+            context = androidContext(),
+            serializer = GsonDeserializer()
+        )
+    }
+    single(
+        qualifier = named("ua"),
+        createdAtStart = true
+    ) {
+        WebSettings.getDefaultUserAgent(androidContext())
+    }
 }
 
 private val widgetModule = module {
@@ -103,7 +122,6 @@ private val widgetModule = module {
         Markwon.builder(get())
             .usePlugin(HtmlPlugin.create())
             .usePlugin(CorePlugin.create())
-            .usePlugin(MentionPlugin.create())
             .usePlugin(HorizontalLinePlugin.create())
             .usePlugin(HeadingPlugin.create())
             .usePlugin(EmphasisPlugin.create())
@@ -113,6 +131,7 @@ private val widgetModule = module {
             .usePlugin(YouTubePlugin.create())
             .usePlugin(LinkifyPlugin.create())
             .usePlugin(SpoilerPlugin.create())
+            .usePlugin(MentionPlugin.create())
             .usePlugin(StrikeThroughPlugin.create())
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(TaskListPlugin.create(get<Context>()))
@@ -120,7 +139,8 @@ private val widgetModule = module {
             .usePlugin(
                 GlideImagesPlugin.create(
                     GlideImagePlugin.create(
-                        Glide.with(get<Context>())
+                        Glide.with(get<Context>()),
+                        get(named("ua"))
                     )
                 )
             )
@@ -202,10 +222,28 @@ private val networkModule = module {
             settings = get()
         )
     }
+    factory {
+        ChuckerInterceptor.Builder(context = androidContext())
+            .collector(
+                collector = ChuckerCollector(
+                    context = androidContext(),
+                    showNotification = true,
+                    retentionPeriod = RetentionManager.Period.ONE_WEEK
+                )
+            )
+            .maxContentLength(
+                length = 250000L
+            )
+            .redactHeaders(
+                headerNames = setOf(BuildConfig.HEADER_KEY)
+            )
+            .alwaysReadResponseBody(false)
+            .build()
+    }
     single {
         val logLevel = if (BuildConfig.DEBUG)
-            ILogger.Level.DEBUG
-        else ILogger.Level.INFO
+            ILogger.Level.INFO
+        else ILogger.Level.ERROR
 
         AniGraphConverter(
             graphProcessor = GraphProcessor(
@@ -262,6 +300,11 @@ private val networkModule = module {
                 .enableComplexMapKeySerialization()
                 .setLenient()
                 .create()
+        )
+    }
+    single {
+        ClientInterceptor(
+            agent = get(named("ua"))
         )
     }
 }

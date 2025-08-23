@@ -2,10 +2,7 @@ package com.mxt.anitrend.view.activity.index
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager.PERMISSION_DENIED
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,29 +14,38 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withResumed
 import androidx.viewpager.widget.ViewPager
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import butterknife.ButterKnife
-import com.afollestad.materialdialogs.DialogAction
 import com.google.android.material.navigation.NavigationView
 import com.mxt.anitrend.R
-import com.mxt.anitrend.adapter.pager.index.*
+import com.mxt.anitrend.adapter.pager.index.AiringPageAdapter
+import com.mxt.anitrend.adapter.pager.index.FeedPageAdapter
+import com.mxt.anitrend.adapter.pager.index.HubPageAdapter
+import com.mxt.anitrend.adapter.pager.index.MangaPageAdapter
+import com.mxt.anitrend.adapter.pager.index.MediaListPageAdapter
+import com.mxt.anitrend.adapter.pager.index.ReviewPageAdapter
+import com.mxt.anitrend.adapter.pager.index.SeasonPageAdapter
+import com.mxt.anitrend.adapter.pager.index.TrendingPageAdapter
 import com.mxt.anitrend.analytics.contract.ISupportAnalytics
 import com.mxt.anitrend.base.custom.activity.ActivityBase
+import com.mxt.anitrend.base.custom.activity.checkUpdate
+import com.mxt.anitrend.base.custom.activity.launchUpdateWorker
 import com.mxt.anitrend.base.custom.async.WebTokenRequest
 import com.mxt.anitrend.base.custom.consumer.BaseConsumer
 import com.mxt.anitrend.base.custom.view.image.AvatarIndicatorView
 import com.mxt.anitrend.base.custom.view.image.HeaderImageView
 import com.mxt.anitrend.base.interfaces.event.BottomSheetChoice
-import com.mxt.anitrend.extension.*
+import com.mxt.anitrend.extension.LAZY_MODE_UNSAFE
+import com.mxt.anitrend.extension.getCompatDrawable
+import com.mxt.anitrend.extension.koinOf
+import com.mxt.anitrend.extension.requestNotificationsPermission
+import com.mxt.anitrend.extension.startNewActivity
 import com.mxt.anitrend.model.entity.anilist.User
 import com.mxt.anitrend.presenter.base.BasePresenter
-import com.mxt.anitrend.service.DownloaderService
 import com.mxt.anitrend.util.DialogUtil
 import com.mxt.anitrend.util.KeyUtil
 import com.mxt.anitrend.util.NotifyUtil
@@ -51,9 +57,12 @@ import com.mxt.anitrend.view.activity.base.SettingsActivity
 import com.mxt.anitrend.view.activity.detail.ProfileActivity
 import com.mxt.anitrend.view.sheet.BottomSheetMessage
 import com.ogaclejapan.smarttablayout.SmartTabLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 /**
  * Created by max on 2017/10/04.
@@ -127,8 +136,7 @@ class MainActivity : ActivityBase<User, BasePresenter>(), View.OnClickListener,
         setViewModel(true)
         if (savedInstanceState == null)
             redirectShortcut = intent.getIntExtra(KeyUtil.arg_redirect, 0)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            mNavigationView.itemBackground = getCompatDrawable(R.drawable.nav_background)
+        mNavigationView.itemBackground = getCompatDrawable(R.drawable.nav_background)
         mNavigationView.setNavigationItemSelectedListener(this)
         mViewPager.offscreenPageLimit = offScreenLimit
         mPageIndex = DateUtil.menuSelect
@@ -137,6 +145,11 @@ class MainActivity : ActivityBase<User, BasePresenter>(), View.OnClickListener,
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+        lifecycleScope.launch(Dispatchers.Main) {
+            withResumed {
+                requestNotificationsPermission()
+            }
+        }
         onActivityReady()
     }
 
@@ -164,7 +177,7 @@ class MainActivity : ActivityBase<User, BasePresenter>(), View.OnClickListener,
                 intent.action = Intent.ACTION_SEND
                 intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.campaign_link))
                 intent.type = "text/plain"
-                startActivity(intent)
+                startActivity(Intent.createChooser(intent, getString(R.string.abc_shareactionprovider_share_with)))
                 return true
             }
             R.id.action_settings -> {
@@ -353,60 +366,7 @@ class MainActivity : ActivityBase<User, BasePresenter>(), View.OnClickListener,
                     })
                 showBottomSheet()
             }
-            R.id.nav_check_update -> when (ContextCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )) {
-                PERMISSION_GRANTED -> {
-                    mBottomSheet = BottomSheetMessage.Builder()
-                        .setText(R.string.drawer_update_text)
-                        .setTitle(R.string.drawer_update_title)
-                        .setPositiveText(R.string.Yes)
-                        .setNegativeText(R.string.No)
-                        .buildWithCallback(object : BottomSheetChoice {
-                            override fun onPositiveButton() {
-                                val versionBase = presenter.database.remoteVersion
-                                if (versionBase != null && versionBase.isNewerVersion)
-                                    DownloaderService.downloadNewVersion(
-                                        this@MainActivity,
-                                        versionBase
-                                    )
-                                else presenter.checkForUpdates()
-                            }
-
-                            override fun onNegativeButton() {
-
-                            }
-                        })
-                    showBottomSheet()
-                }
-                PERMISSION_DENIED -> if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        this@MainActivity,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                )
-                    DialogUtil.createMessage(
-                        this@MainActivity,
-                        R.string.title_permission_write,
-                        R.string.text_permission_write
-                    ) { _, which ->
-                        when (which) {
-                            DialogAction.POSITIVE -> ActivityCompat.requestPermissions(
-                                this,
-                                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                                REQUEST_PERMISSION
-                            )
-                            DialogAction.NEGATIVE -> NotifyUtil.makeText(
-                                this@MainActivity,
-                                R.string.canceled_by_user,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            else -> {}
-                        }
-                    }
-                else
-                    requestPermissionIfMissing(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
+            R.id.nav_check_update -> checkUpdate()
             else -> { }
         }
     }
@@ -422,7 +382,7 @@ class MainActivity : ActivityBase<User, BasePresenter>(), View.OnClickListener,
             if (permission == Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 onNavigate(R.id.nav_check_update)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e)
         }
 
     }
@@ -445,49 +405,32 @@ class MainActivity : ActivityBase<User, BasePresenter>(), View.OnClickListener,
     }
 
     override fun makeRequest() {
-        WorkManager.getInstance(this)
-            .getWorkInfosByTagLiveData(
-                KeyUtil.WorkUpdaterId
-            ).observe(this) { workInfoList ->
-                val workInfo = workInfoList.firstOrNull { workInfo ->
-                    workInfo.state == WorkInfo.State.SUCCEEDED
-                }
-                if (workInfo != null)
-                    onUpdateChecked()
+        launchUpdateWorker(menuItems)
+    }
+
+    private fun checkNewInstallation() {
+        if (presenter.settings.isUpdated) {
+            DialogUtil.createChangeLog(this)
+            presenter.settings.setUpdated()
+        }
+        if (presenter.settings.isFreshInstall) {
+            presenter.settings.isFreshInstall = false
+            mBottomSheet = BottomSheetMessage.Builder()
+                .setText(R.string.app_intro_guide)
+                .setTitle(R.string.app_intro_title)
+                .setNegativeText(R.string.Ok).build()
+            showBottomSheet()
         }
     }
 
     private fun requestCurrentUser() {
-        // Sync local current user data with remote
         if (presenter.settings.isAuthenticated) {
-            viewModel.params.putParcelable(
-                KeyUtil.arg_graph_params,
-                GraphUtil.getDefaultQuery(false)
-            )
-            viewModel.requestData(KeyUtil.USER_CURRENT_REQ, this)
-        }
-    }
-
-    private fun onLatestUpdateInstalled() {
-        NotifyUtil.createAlerter(
-            this@MainActivity,
-            getString(R.string.title_update_infodadat),
-            getString(R.string.app_no_date),
-            R.drawable.ic_cloud_done_white_24dp,
-            R.color.colorStateGreen
-        )
-    }
-
-    private fun onUpdateChecked() {
-        val remoteVersion = presenter.database.remoteVersion
-
-        if (remoteVersion != null) {
-            if (remoteVersion.isNewerVersion) {
-                // If a new version of the application is available on GitHub
-                val mAppUpdateWidget = menuItems.findItem(R.id.nav_check_update)
-                    .actionView.findViewById<TextView>(R.id.app_update_info)
-                mAppUpdateWidget.text = getString(R.string.app_update, remoteVersion.version)
-                mAppUpdateWidget.visibility = View.VISIBLE
+            presenter.updateUserLastSyncTimeStampIf(intervalInMinutes = 5) {
+                viewModel?.params?.putParcelable(
+                    KeyUtil.arg_graph_params,
+                    GraphUtil.getDefaultQuery(false)
+                )
+                viewModel?.requestData(KeyUtil.USER_CURRENT_REQ, this)
             }
         }
     }
@@ -514,24 +457,6 @@ class MainActivity : ActivityBase<User, BasePresenter>(), View.OnClickListener,
         mSignOutProfile.isVisible = true
         mManageMenu.isVisible = true
         mHomeFeed.isVisible = true
-    }
-
-    /**
-     * Checks to see if this instance is a new installation
-     */
-    private fun checkNewInstallation() {
-        if (presenter.settings.isUpdated) {
-            DialogUtil.createChangeLog(this)
-            presenter.settings.setUpdated()
-        }
-        if (presenter.settings.isFreshInstall) {
-            presenter.settings.isFreshInstall = false
-            mBottomSheet = BottomSheetMessage.Builder()
-                .setText(R.string.app_intro_guide)
-                .setTitle(R.string.app_intro_title)
-                .setNegativeText(R.string.Ok).build()
-            showBottomSheet()
-        }
     }
 
     override fun onClick(view: View) {

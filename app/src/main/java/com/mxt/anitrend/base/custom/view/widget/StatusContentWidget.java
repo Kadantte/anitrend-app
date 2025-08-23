@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import timber.log.Timber;
+
 /**
  * Created by max on 2017/11/25.
  */
@@ -78,17 +80,14 @@ public class StatusContentWidget extends LinearLayout implements CustomView, Ite
     }
 
     public void setModel(FeedList model) {
-        binding.widgetStatusText.setMarkDownText(model.getText());
         findMediaAttachments(model.getText());
     }
 
     public void setModel(FeedReply model) {
-        binding.widgetStatusText.setMarkDownText(model.getReply());
         findMediaAttachments(model.getReply());
     }
 
     public void setTextData(@Nullable String textData) {
-        binding.widgetStatusText.setMarkDownText(textData);
         findMediaAttachments(textData);
     }
 
@@ -172,7 +171,7 @@ public class StatusContentWidget extends LinearLayout implements CustomView, Ite
                     intent.setData(Uri.parse(data.getSecond()));
                     getContext().startActivity(intent);
                 } catch (ActivityNotFoundException e) {
-                    e.printStackTrace();
+                    Timber.e(e);
                 }
                 break;
         }

@@ -6,6 +6,8 @@ import com.mxt.anitrend.BuildConfig
 import com.mxt.anitrend.extension.workManagerFactory
 import com.mxt.anitrend.initializer.ApplicationInitializer
 import com.mxt.anitrend.koin.appModules
+import com.mxt.anitrend.util.Settings
+import com.mxt.anitrend.util.locale.LocaleUtil
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.logger.KOIN_TAG
@@ -23,7 +25,12 @@ class InjectorInitializer : Initializer<Unit> {
      */
     override fun create(context: Context) {
         startKoin {
-            androidContext(context)
+            androidContext(
+                LocaleUtil.applyConfiguration(
+                    context,
+                    Settings(context)
+                )
+            )
             logger(KoinLogger())
             workManagerFactory()
             modules(appModules)
@@ -43,10 +50,11 @@ class InjectorInitializer : Initializer<Unit> {
     internal class KoinLogger(
         logLevel: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
     ) : Logger(logLevel) {
-        override fun log(level: Level, msg: MESSAGE) {
+        override fun display(level: Level, msg: MESSAGE) {
             when (level) {
                 Level.DEBUG -> Timber.tag(KOIN_TAG).v(msg)
                 Level.INFO -> Timber.tag(KOIN_TAG).i(msg)
+                Level.WARNING -> Timber.tag(KOIN_TAG).w(msg)
                 Level.ERROR -> Timber.tag(KOIN_TAG).e(msg)
                 Level.NONE -> { /* logging disabled */ }
             }

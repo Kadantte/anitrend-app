@@ -1,59 +1,68 @@
-import com.mxt.anitrend.buildsrc.common.Versions
-
 plugins {
     id("com.mxt.anitrend.plugin")
 }
 
+android {
+    namespace = "com.mxt.anitrend"
+
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
+}
+
 dependencies {
     /** Butter Knife Libraries */
-    implementation("com.jakewharton:butterknife:${Versions.butterKnife}")
-    kapt("com.jakewharton:butterknife-compiler:${Versions.butterKnife}")
+    implementation(libs.butterknife)
+    kapt(libs.butterknife.compiler)
 
     /** Material Dialogs */
-    implementation("com.afollestad.material-dialogs:core:${Versions.materialDialogs}")
+    implementation(libs.material.dialogs.core)
 
     /** Tap Target Prompt */
-    implementation("uk.co.samuelwall:material-tap-target-prompt:${Versions.tapTarget}")
+    implementation(libs.material.tap.target.prompt)
 
     /** Pretty Time */
-    implementation("org.ocpsoft.prettytime:prettytime:${Versions.prettyTime}")
+    implementation(libs.prettyTime)
 
     /** Highly Customizable Video Player */
-    implementation("cn.jzvd:jiaozivideoplayer:${Versions.jiaoziVideoPlayer}")
+    implementation(libs.jiaozivideoplayer)
 
     /** Photo View */
-    implementation("com.github.chrisbanes:PhotoView:${Versions.photoView}")
+    implementation(libs.photoview)
 
     /** On-boarding Experience */
-    implementation("com.codemybrainsout.onboarding:onboarder:${Versions.onboarder}")
+    implementation(libs.onboarder)
 
     /** Charts */
-    implementation("com.github.PhilJay:MPAndroidChart:v${Versions.mpAndroidChart}")
+    implementation(libs.mpandroidchart)
 
     /** About Library */
-    implementation("com.github.medyo:android-about-page:${Versions.aboutPage}")
+    implementation(libs.android.about.page)
 
     /** Multi Dex */
-    implementation("androidx.multidex:multidex:${Versions.multidex}")
+    implementation(libs.androidx.multidex)
 
     /** Material Search View */
-    implementation("com.github.ma-myair:MaterialSearchView:${Versions.materialSearchView}")
+    implementation(libs.materialsearchview)
 
     /** State Layout Library */
-    implementation("com.github.nguyenhoanglam:ProgressLayout:${Versions.progressLayout}")
+    implementation(libs.progresslayout)
 
     /** Event Bus Library */
-    implementation("org.greenrobot:eventbus:${Versions.eventBus}")
+    implementation(libs.eventbus)
 
     /** Alerter */
-    implementation("com.tapadoo.android:alerter:${Versions.alerter}")
+    implementation(libs.alerter)
 
     /** Stream */
-    implementation("com.annimon:stream:${Versions.stream}")
+    implementation(libs.stream)
 
     /** Circular Progress View */
-    implementation("com.github.rahatarmanahmed:circularprogressview:${Versions.circularProgressView}")
+    implementation(libs.circularprogressview)
 
     /** Txtmark */
-    implementation("es.nitaur.markdown:txtmark:${Versions.txtmark}")
+    implementation(libs.txtmark)
 }

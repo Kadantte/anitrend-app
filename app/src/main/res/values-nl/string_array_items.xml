@@ -10,7 +10,8 @@
     <string name="seasons_title_summer">zomer</string>
     <string name="seasons_title_fall">herfst</string>
 
-    <string name="trending_title_being_watched">worden bekeken</string>
+    <string name="trending_title_anime">trending anime</string>
+    <string name="trending_title_manga">trending manga</string>
     <string name="trending_title_recently_added">recentelijk toegevoegd</string>
 
     <string name="airing_title_anime">opkomende afleveringen</string>
@@ -65,7 +66,6 @@
 
     <string name="anime_page_title_overview">overzicht</string>
     <string name="anime_page_title_stats">stats</string>
-    <string name="anime_page_title_episodes">afleveringen</string>
     <string name="anime_page_title_characters">karakters</string>
     <string name="anime_page_title_staff">personeel</string>
     <string name="anime_page_title_reviews">reviews</string>
@@ -130,7 +130,7 @@
     <string name="on_list_not_on_list_only">Not on list only</string>
     <string name="on_list_on_list_only">On list only</string>
 
-    <string name="pref_selected_list_view_style_title_default">Compact (single column)</string>
+    <string name="pref_selected_list_view_style_title_default">Default</string>
     <string name="pref_selected_list_view_style_title_compact_single">Compact (single column)</string>
     <string name="pref_selected_list_view_style_title_compact_double">Compact (double column)</string>
 

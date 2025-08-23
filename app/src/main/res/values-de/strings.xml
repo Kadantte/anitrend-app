@@ -311,6 +311,7 @@ Another message using a bit of html the p tags represent new paragraphs -->
     <string name="text_permission_write">"AniTrend benötigt die Erlaubnis, Dateien in das Downloadverzeichnis zu speichern. Fortfahren?"</string>
     <string name="init_youtube_missing">"Um sich Trailer anzuschauen, benötigst du die YouTube App!"</string>
     <string name="text_confirm_exit">"Tippe erneut, um die App zu beenden"</string>
+    <string name="text_url_copied_to_clipboard">Copied URL to clipboard</string>
     <string name="text_filter_applying">"Änderungen anwenden.."</string>
     <string name="text_filter_restriction">"Filter sind auf dieser Seite nicht verfügbar"</string>
     <string name="text_quality_changed">"Qualität der Liste wurde verändert!"</string>
@@ -635,4 +636,10 @@ These are the anime time labels in your profile -->
     <string name="app_filter_on_list">"Auf meiner Liste?"</string>
     <string name="text_about_application_version">"Version %s"</string>
     <string name="notification_action_mark_as_read">"Als gelesen markieren"</string>
+    <string name="pref_title_experimental_markdown">Experimental markdown support</string>
+    <string name="pref_summary_experimental_markdown">Allows the application to render AniList specific markdown better but does have some issues</string>
+    <string name="notification_media_merge">Media Merge</string>
+    <string name="notification_media_deletion">Media Deletion</string>
+    <string name="notification_media_data_change">Media Update</string>
+    <string name="title_recommendations">Recommendations</string>
 </resources>

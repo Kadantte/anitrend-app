@@ -35,6 +35,23 @@ open class BasePresenter(context: Context?) : CommonPresenter(context) {
     private var favouriteYears: List<String>? = null
     private var favouriteFormats: List<String>? = null
 
+    /**
+     * Avoids running a delegate if the specified interval time has not elapsed since the last
+     * call of this function
+     *
+     * @param intervalInMinutes time interval in minutes
+     * @param action delegate to invoke if the the time interval has elapsed since the last run
+     *
+     * @see KeyUtil.TIME_UNIT_MINUTES
+     */
+    inline fun updateUserLastSyncTimeStampIf(intervalInMinutes: Int = 15, action: () -> Unit) {
+        val lastSyncedAt = settings.lastUserSyncTime
+        if (DateUtil.timeDifferenceSatisfied(KeyUtil.TIME_UNIT_MINUTES, lastSyncedAt, intervalInMinutes)) {
+            action()
+            settings.lastUserSyncTime = System.currentTimeMillis()
+        }
+    }
+
     @IdRes
     fun getNavigationItem(): Int {
         return when (settings.startupPage) {
@@ -58,6 +75,7 @@ open class BasePresenter(context: Context?) : CommonPresenter(context) {
                     .addMigration(Migrations.MIGRATION_109_134)
                     .addMigration(Migrations.MIGRATION_135_136)
                     .addMigration(Migrations.MIGRATION_18400_18500)
+                    .addMigration(Migrations.MIGRATION_1090700_1090800)
                     .build(context)
             return migrationUtil.applyMigration()
         }
@@ -190,9 +208,9 @@ open class BasePresenter(context: Context?) : CommonPresenter(context) {
     /**
      * Runs worker to check for updates
      */
-    fun checkForUpdates() {
+    fun checkForUpdates(silent: Boolean) {
         val scheduler = JobSchedulerUtil(settings)
-        scheduler.startUpdateJob(context)
+        scheduler.startUpdateJob(context, silent)
     }
 
     companion object {

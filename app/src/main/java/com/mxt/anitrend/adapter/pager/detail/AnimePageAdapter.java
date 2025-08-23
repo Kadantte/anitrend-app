@@ -17,6 +17,7 @@ import com.mxt.anitrend.view.fragment.detail.MediaStaffFragment;
 import com.mxt.anitrend.view.fragment.detail.MediaStatsFragment;
 import com.mxt.anitrend.view.fragment.detail.ReviewFragment;
 import com.mxt.anitrend.view.fragment.group.MediaCharacterFragment;
+import com.mxt.anitrend.view.fragment.group.MediaRecommendationsFragment;
 import com.mxt.anitrend.view.fragment.group.MediaRelationFragment;
 import com.mxt.anitrend.view.fragment.list.WatchListFragment;
 
@@ -52,9 +53,9 @@ public class AnimePageAdapter extends BaseStatePageAdapter {
             case 1:
                 return MediaRelationFragment.newInstance(getParams());
             case 2:
-                return MediaStatsFragment.newInstance(getParams());
+                return MediaRecommendationsFragment.newInstance(getParams());
             case 3:
-                return WatchListFragment.newInstance(getParams(),false);
+                return MediaStatsFragment.newInstance(getParams());
             case 4:
                 return MediaCharacterFragment.newInstance(getParams());
             case 5:

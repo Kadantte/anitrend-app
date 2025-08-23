@@ -19,7 +19,6 @@ package com.mxt.anitrend.buildsrc.extensions
 
 import org.gradle.api.artifacts.*
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.kotlin.dsl.exclude
 
 private enum class DependencyType(val configurationName: String) {
     API("api"),
@@ -95,8 +94,8 @@ private inline fun DependencyHandler.add(
  * @see [ModuleDependency.exclude]
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : ModuleDependency> T.exclude(group: String? = null, module: String? = null): T =
-    exclude(mapOf("group" to group, "module" to module)) as T
+fun <T : ModuleDependency> T.exclude(group: String = "", module: String = ""): T =
+    exclude(mutableMapOf("group" to group, "module" to module)) as T
 
 private fun DependencyHandler.addDependency(
     dependencyNotation: Any,
@@ -115,7 +114,7 @@ private fun DependencyHandler.addDependency(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */
@@ -128,7 +127,7 @@ internal fun DependencyHandler.kapt(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */
@@ -141,7 +140,7 @@ internal fun DependencyHandler.api(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */
@@ -154,7 +153,7 @@ internal fun DependencyHandler.compile(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */
@@ -167,7 +166,7 @@ internal fun DependencyHandler.debug(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */
@@ -180,7 +179,7 @@ internal fun DependencyHandler.implementation(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */
@@ -193,7 +192,7 @@ internal fun DependencyHandler.debugImplementation(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */
@@ -206,7 +205,7 @@ internal fun DependencyHandler.releaseImplementation(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */
@@ -219,7 +218,7 @@ internal fun DependencyHandler.runtime(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */
@@ -232,7 +231,7 @@ internal fun DependencyHandler.testImplementation(
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
  * @param dependencyNotation The dependency notation, in one of the notations described above.
- * @param configureClosure The closure to use to configure the dependency.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
  *
  * @return The dependency.
  */

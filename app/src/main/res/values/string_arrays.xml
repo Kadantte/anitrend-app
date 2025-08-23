@@ -18,7 +18,8 @@
 
     <!--Try to keep all titles short-->
     <string-array name="trending_title">
-        <item>@string/trending_title_being_watched</item>
+        <item>@string/trending_title_anime</item>
+        <item>@string/trending_title_manga</item>
         <item>@string/trending_title_recently_added</item>
     </string-array>
 
@@ -103,8 +104,8 @@
     <string-array name="anime_page_titles">
         <item>@string/anime_page_title_overview</item>
         <item>@string/title_relation</item>
+        <item>@string/title_recommendations</item>
         <item>@string/anime_page_title_stats</item>
-        <item>@string/anime_page_title_episodes</item>
         <item>@string/anime_page_title_characters</item>
         <item>@string/anime_page_title_staff</item>
         <item>@string/title_social</item>
@@ -115,6 +116,7 @@
     <string-array name="manga_page_titles">
         <item>@string/manga_page_title_overview</item>
         <item>@string/title_relation</item>
+        <item>@string/title_recommendations</item>
         <item>@string/manga_page_title_stats</item>
         <item>@string/manga_page_title_characters</item>
         <item>@string/manga_page_title_staff</item>

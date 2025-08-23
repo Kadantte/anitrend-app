@@ -40,8 +40,6 @@ public class CharacterActivity extends ActivityBase<CharacterBase, BasePresenter
     protected @BindView(R.id.smart_tab) SmartTabLayout smartTabLayout;
     protected @BindView(R.id.coordinator) CoordinatorLayout coordinatorLayout;
 
-    private CharacterBase model;
-
     private FavouriteToolbarWidget favouriteWidget;
 
     @Override
@@ -71,6 +69,7 @@ public class CharacterActivity extends ActivityBase<CharacterBase, BasePresenter
         if(isAuth) {
             MenuItem favouriteMenuItem = menu.findItem(R.id.action_favourite);
             favouriteWidget = (FavouriteToolbarWidget) favouriteMenuItem.getActionView();
+            CharacterBase model = getModel();
             if(model != null)
                 favouriteWidget.setModel(model);
         }
@@ -79,6 +78,7 @@ public class CharacterActivity extends ActivityBase<CharacterBase, BasePresenter
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        CharacterBase model = getModel();
         if(model != null) {
             switch (item.getItemId()) {
                 case R.id.action_share:
@@ -87,7 +87,7 @@ public class CharacterActivity extends ActivityBase<CharacterBase, BasePresenter
                     intent.putExtra(Intent.EXTRA_TEXT, String.format(Locale.getDefault(),
                             "%s - %s", model.getName().getFullName(), model.getSiteUrl()));
                     intent.setType("text/plain");
-                    startActivity(intent);
+                    startActivity(Intent.createChooser(intent, getString(R.string.abc_shareactionprovider_share_with)));
                     break;
             }
         } else
@@ -111,7 +111,7 @@ public class CharacterActivity extends ActivityBase<CharacterBase, BasePresenter
     @Override
     protected void onResume() {
         super.onResume();
-        if(model == null)
+        if(getModel() == null)
             makeRequest();
         else
             updateUI();
@@ -119,6 +119,7 @@ public class CharacterActivity extends ActivityBase<CharacterBase, BasePresenter
 
     @Override
     protected void updateUI() {
+        CharacterBase model = getModel();
         if(model != null)
             if(favouriteWidget != null)
                 favouriteWidget.setModel(model);
@@ -141,7 +142,6 @@ public class CharacterActivity extends ActivityBase<CharacterBase, BasePresenter
     @Override
     public void onChanged(@Nullable CharacterBase model) {
         super.onChanged(model);
-        this.model = model;
         updateUI();
     }
 }

@@ -75,11 +75,13 @@ class NotificationFragment : FragmentBaseList<Notification, PageContainer<Notifi
         }*/
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.findItem(R.id.action_mark_all).isVisible = true
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_mark_all -> {
@@ -184,7 +186,10 @@ class NotificationFragment : FragmentBaseList<Notification, PageContainer<Notifi
         setItemAsRead(data.second)
         if (target.id == R.id.notification_img &&
                 !CompatUtil.equals(data.second.type, KeyUtil.AIRING) &&
-                !CompatUtil.equals(data.second.type, KeyUtil.RELATED_MEDIA_ADDITION)
+                !CompatUtil.equals(data.second.type, KeyUtil.RELATED_MEDIA_ADDITION) &&
+                !CompatUtil.equals(data.second.type, KeyUtil.MEDIA_DATA_CHANGE) &&
+                !CompatUtil.equals(data.second.type, KeyUtil.MEDIA_DELETION) &&
+                !CompatUtil.equals(data.second.type, KeyUtil.MEDIA_MERGE)
         ) {
             intent = Intent(activity, ProfileActivity::class.java)
             intent.putExtra(KeyUtil.arg_id, data.second.user.id)
@@ -206,7 +211,11 @@ class NotificationFragment : FragmentBaseList<Notification, PageContainer<Notifi
                     intent.putExtra(KeyUtil.arg_id, data.second.activityId)
                     startActivity(intent)
                 }
-                KeyUtil.AIRING, KeyUtil.RELATED_MEDIA_ADDITION -> {
+                KeyUtil.AIRING,
+                KeyUtil.RELATED_MEDIA_ADDITION,
+                KeyUtil.MEDIA_DATA_CHANGE,
+                KeyUtil.MEDIA_DELETION,
+                KeyUtil.MEDIA_MERGE -> {
                     intent = Intent(activity, MediaActivity::class.java)
                     intent.putExtra(KeyUtil.arg_id, data.second.media?.id)
                     intent.putExtra(KeyUtil.arg_mediaType, data.second.media?.type)

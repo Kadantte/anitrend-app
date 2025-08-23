@@ -64,11 +64,11 @@ class LoggingActivity : ActivityBase<Void, BasePresenter>(), CoroutineScope by M
         super.onPostCreate(savedInstanceState)
         applicationVersionTextView.text = getString(
                 R.string.text_about_application_version,
-                BuildConfig.VERSION_NAME
+                BuildConfig.versionName
         )
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.logging_menu, menu)
         return true
     }
@@ -123,7 +123,7 @@ class LoggingActivity : ActivityBase<Void, BasePresenter>(), CoroutineScope by M
                     ))
                     type = "text/plain"
                 }
-                startActivity(intent)
+                startActivity(Intent.createChooser(intent, getString(R.string.abc_shareactionprovider_share_with)))
             }
         }
         return super.onOptionsItemSelected(item)

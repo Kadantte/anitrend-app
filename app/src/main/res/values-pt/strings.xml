@@ -334,6 +334,8 @@
 
     <string name="text_confirm_exit">Pressione voltar novamente para sair do aplicativo</string>
 
+    <string name="text_url_copied_to_clipboard">Copied URL to clipboard</string>
+
     <string name="text_filter_applying">Aplicando Alterações..</string>
 
     <string name="text_filter_restriction">Filtros não aplicáveis nesta página</string>
@@ -760,4 +762,10 @@
     <string name="title_bottom_sheet_spoiler">Spoiler</string>
     <string name="pref_title_list_view_style">List View Style</string>
     <string name="notification_action_mark_as_read">Mark as read</string>
+    <string name="pref_title_experimental_markdown">Experimental markdown support</string>
+    <string name="pref_summary_experimental_markdown">Allows the application to render AniList specific markdown better but does have some issues</string>
+    <string name="notification_media_merge">Media Merge</string>
+    <string name="notification_media_deletion">Media Deletion</string>
+    <string name="notification_media_data_change">Media Update</string>
+    <string name="title_recommendations">Recommendations</string>
 </resources>

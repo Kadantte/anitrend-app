@@ -45,8 +45,6 @@ public class StaffActivity extends ActivityBase<StaffBase, BasePresenter> {
 
     private Boolean onList;
 
-    private StaffBase model;
-
     private FavouriteToolbarWidget favouriteWidget;
 
     @Override
@@ -78,6 +76,7 @@ public class StaffActivity extends ActivityBase<StaffBase, BasePresenter> {
         if(isAuth) {
             MenuItem favouriteMenuItem = menu.findItem(R.id.action_favourite);
             favouriteWidget = (FavouriteToolbarWidget) favouriteMenuItem.getActionView();
+            StaffBase model = getModel();
             if(model != null)
                 favouriteWidget.setModel(model);
         }
@@ -86,6 +85,7 @@ public class StaffActivity extends ActivityBase<StaffBase, BasePresenter> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        StaffBase model = getModel();
         if(model != null) {
             switch (item.getItemId()) {
                 case R.id.action_share:
@@ -94,7 +94,7 @@ public class StaffActivity extends ActivityBase<StaffBase, BasePresenter> {
                     intent.putExtra(Intent.EXTRA_TEXT, String.format(Locale.getDefault(),
                             "%s - %s", model.getName().getFullName(), model.getSiteUrl()));
                     intent.setType("text/plain");
-                    startActivity(intent);
+                    startActivity(Intent.createChooser(intent, getString(R.string.abc_shareactionprovider_share_with)));
                     break;
                 case R.id.action_on_my_list:
                     DialogUtil.createSelection(this, R.string.app_filter_on_list,
@@ -132,14 +132,14 @@ public class StaffActivity extends ActivityBase<StaffBase, BasePresenter> {
         StaffPageAdapter pageAdapter = new StaffPageAdapter(getSupportFragmentManager(), getApplicationContext());
         pageAdapter.setParams(getViewModel().getParams());
         viewPager.setAdapter(pageAdapter);
-        viewPager.setOffscreenPageLimit(offScreenLimit + 1);
+        viewPager.setOffscreenPageLimit(offScreenLimit);
         smartTabLayout.setViewPager(viewPager);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(model == null)
+        if(getModel() == null)
             makeRequest();
         else
             updateUI();
@@ -147,6 +147,7 @@ public class StaffActivity extends ActivityBase<StaffBase, BasePresenter> {
 
     @Override
     protected void updateUI() {
+        StaffBase model = getModel();
         if(model != null)
             if(favouriteWidget != null)
                 favouriteWidget.setModel(model);
@@ -168,7 +169,6 @@ public class StaffActivity extends ActivityBase<StaffBase, BasePresenter> {
     @Override
     public void onChanged(@Nullable StaffBase model) {
         super.onChanged(model);
-        this.model = model;
         updateUI();
     }
 

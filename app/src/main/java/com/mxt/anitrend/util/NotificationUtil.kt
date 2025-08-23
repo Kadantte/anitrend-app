@@ -12,6 +12,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_HIGH
 import androidx.core.text.bold
 import com.mxt.anitrend.R
+import com.mxt.anitrend.extension.checkNotificationPermission
+import com.mxt.anitrend.extension.getCompatColor
 import com.mxt.anitrend.model.entity.anilist.Notification
 import com.mxt.anitrend.model.entity.anilist.User
 import com.mxt.anitrend.model.entity.container.body.PageContainer
@@ -43,7 +45,7 @@ class NotificationUtil(
                 context,
                 defaultNotificationId,
                 targetActivity,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 
@@ -56,7 +58,7 @@ class NotificationUtil(
             context,
             action.hashCode(),
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 
@@ -101,7 +103,10 @@ class NotificationUtil(
                     builder.append(context.getString(R.string.notification_episode,
                         notification.episode.toString(), notification.media?.title?.userPreferred))
                 }
-                KeyUtil.RELATED_MEDIA_ADDITION -> {
+                KeyUtil.RELATED_MEDIA_ADDITION,
+                KeyUtil.MEDIA_DATA_CHANGE,
+                KeyUtil.MEDIA_MERGE,
+                KeyUtil.MEDIA_DELETION -> {
                     builder.bold {
                         builder.append(notification.media?.title?.userPreferred)
                     }
@@ -110,7 +115,7 @@ class NotificationUtil(
                 }
             }
             if (i != displayedNotificationsCount - 1) {
-                builder.appendln()
+                builder.appendLine()
             }
         }
 
@@ -131,7 +136,7 @@ class NotificationUtil(
             defaultNotificationId = defaultNotificationId.inc()
 
         val notificationBuilder = NotificationCompat.Builder(context, KeyUtil.CHANNEL_ID)
-            .setColor(context.resources.getColor(R.color.colorStateBlue))
+            .setColor(context.getCompatColor(R.color.colorStateBlue))
             .setSmallIcon(R.drawable.ic_new_releases)
             .setPriority(PRIORITY_HIGH)
             .addAction(
@@ -185,7 +190,8 @@ class NotificationUtil(
                     .setStyle(NotificationCompat.BigTextStyle()
                             .bigText(notificationContent))
 
-            notificationManager?.notify(defaultNotificationId, notificationBuilder.build())
+            if (context.checkNotificationPermission(KeyUtil.CHANNEL_ID))
+                notificationManager?.notify(defaultNotificationId, notificationBuilder.build())
         }
     }
 }

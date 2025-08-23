@@ -18,6 +18,7 @@ import com.mxt.anitrend.base.custom.activity.ActivityBase;
 import com.mxt.anitrend.base.custom.consumer.BaseConsumer;
 import com.mxt.anitrend.base.custom.view.image.WideImageView;
 import com.mxt.anitrend.databinding.ActivityProfileBinding;
+import com.mxt.anitrend.model.entity.base.StaffBase;
 import com.mxt.anitrend.model.entity.base.UserBase;
 import com.mxt.anitrend.presenter.base.BasePresenter;
 import com.mxt.anitrend.util.CompatUtil;
@@ -27,6 +28,8 @@ import com.mxt.anitrend.util.TutorialUtil;
 import com.mxt.anitrend.util.graphql.GraphUtil;
 import com.mxt.anitrend.view.sheet.BottomSheetComposer;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +48,6 @@ public class ProfileActivity extends ActivityBase<UserBase, BasePresenter> imple
 
     private ActivityProfileBinding binding;
     private String userName;
-    private UserBase model;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,7 +84,7 @@ public class ProfileActivity extends ActivityBase<UserBase, BasePresenter> imple
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if(model == null)
+        if(getModel() == null)
             onActivityReady();
         else
             updateUI();
@@ -98,6 +100,7 @@ public class ProfileActivity extends ActivityBase<UserBase, BasePresenter> imple
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        UserBase model = getModel();
         switch (item.getItemId()) {
             case R.id.action_notification:
                 startActivity(new Intent(ProfileActivity.this, NotificationActivity.class));
@@ -114,6 +117,17 @@ public class ProfileActivity extends ActivityBase<UserBase, BasePresenter> imple
                                 .build();
                         mBottomSheet.show(getSupportFragmentManager(), mBottomSheet.getTag());
                     }
+                } else
+                    NotifyUtil.INSTANCE.makeText(this, R.string.text_activity_loading, Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_share:
+                if(model != null) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TEXT, String.format(Locale.getDefault(),
+                            "https://anilist.co/user/%s", model.getName()));
+                    intent.setType("text/plain");
+                    startActivity(Intent.createChooser(intent, getString(R.string.abc_shareactionprovider_share_with)));
                 } else
                     NotifyUtil.INSTANCE.makeText(this, R.string.text_activity_loading, Toast.LENGTH_SHORT).show();
                 return true;
@@ -137,6 +151,7 @@ public class ProfileActivity extends ActivityBase<UserBase, BasePresenter> imple
     protected void updateUI() {
         binding.setOnClickListener(this);
         binding.profileStatsWidget.setParams(getIntent().getExtras());
+        UserBase model = getModel();
         WideImageView.setImage(binding.profileBanner, model.getBannerImage());
         if(getPresenter().isCurrentUser(model.getId())) {
             new TutorialUtil().setContext(this)
@@ -178,7 +193,6 @@ public class ProfileActivity extends ActivityBase<UserBase, BasePresenter> imple
         super.onChanged(model);
         if(model != null) {
             this.id = model.getId();
-            this.model = model;
             updateUI();
         } else
             NotifyUtil.INSTANCE.createAlerter(this, R.string.text_user_model, R.string.layout_empty_response, R.drawable.ic_warning_white_18dp, R.color.colorStateRed);
@@ -188,7 +202,10 @@ public class ProfileActivity extends ActivityBase<UserBase, BasePresenter> imple
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.profile_banner:
-                CompatUtil.INSTANCE.imagePreview(view, model.getBannerImage(), R.string.image_preview_error_profile_banner);
+                UserBase model = getModel();
+                if (model != null) {
+                    CompatUtil.INSTANCE.imagePreview(view, model.getBannerImage(), R.string.image_preview_error_profile_banner);
+                }
                 break;
         }
     }

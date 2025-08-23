@@ -47,7 +47,6 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 public class MediaActivity extends ActivityBase<MediaBase, MediaPresenter> implements View.OnClickListener {
 
     private ActivitySeriesBinding binding;
-    private MediaBase model;
 
     private @KeyUtil.MediaType String mediaType;
 
@@ -87,12 +86,13 @@ public class MediaActivity extends ActivityBase<MediaBase, MediaPresenter> imple
         getMenuInflater().inflate(R.menu.media_base_menu, menu);
         menu.findItem(R.id.action_favourite).setVisible(isAuth);
 
+        MediaBase model = getModel();
         malMenuItem = menu.findItem(R.id.action_mal);
         malMenuItem.setVisible(model != null && model.getIdMal() > 0);
 
         manageMenuItem = menu.findItem(R.id.action_manage);
         manageMenuItem.setVisible(isAuth);
-        setManageMenuItemIcon();
+        setMenuItemIcons();
 
         if(isAuth) {
             MenuItem favouriteMenuItem = menu.findItem(R.id.action_favourite);
@@ -104,6 +104,7 @@ public class MediaActivity extends ActivityBase<MediaBase, MediaPresenter> imple
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        MediaBase model = getModel();
         if(model != null) {
             switch (item.getItemId()) { 
                 case R.id.action_manage:
@@ -117,14 +118,14 @@ public class MediaActivity extends ActivityBase<MediaBase, MediaPresenter> imple
                     intent.putExtra(Intent.EXTRA_TEXT, String.format(Locale.getDefault(),
                             "%s - %s", model.getTitle().getUserPreferred(), model.getSiteUrl()));
                     intent.setType("text/plain");
-                    startActivity(intent);
+                    startActivity(Intent.createChooser(intent, getString(R.string.abc_shareactionprovider_share_with)));
                     break;
                 case R.id.action_mal:
                     String url = String.format(Locale.getDefault(),
                             "https://myanimelist.net/%s/%d",
                             mediaType.toLowerCase(), model.getIdMal());
                     intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(intent);
+                    startActivity(Intent.createChooser(intent, getString(R.string.abc_shareactionprovider_share_with)));
                     break;
             }
         } else
@@ -153,7 +154,7 @@ public class MediaActivity extends ActivityBase<MediaBase, MediaPresenter> imple
     @Override
     protected void onResume() {
         super.onResume();
-        if(model == null)
+        if(getModel() == null)
             makeRequest();
         else
             updateUI();
@@ -161,12 +162,12 @@ public class MediaActivity extends ActivityBase<MediaBase, MediaPresenter> imple
 
     @Override
     protected void updateUI() {
+        MediaBase model = getModel();
         if(model != null) {
             binding.setModel(model);
             binding.setOnClickListener(this);
-            malMenuItem.setVisible(model.getIdMal() > 0);
             WideImageView.setImage(binding.seriesBanner, model.getBannerImage());
-            setFavouriteWidgetMenuItemIcon(); setManageMenuItemIcon();
+            setFavouriteWidgetMenuItemIcon(); setMenuItemIcons();
             if(getPresenter().getSettings().isAuthenticated()) {
                 MaterialTapTargetPrompt.Builder favouritesPrompt = new TutorialUtil().setContext(this)
                         .setFocalColour(R.color.colorGrey600)
@@ -197,7 +198,6 @@ public class MediaActivity extends ActivityBase<MediaBase, MediaPresenter> imple
     @Override
     public void onChanged(@Nullable MediaBase model) {
         super.onChanged(model);
-        this.model = model;
         updateUI();
     }
 
@@ -205,7 +205,10 @@ public class MediaActivity extends ActivityBase<MediaBase, MediaPresenter> imple
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.series_banner:
-                CompatUtil.INSTANCE.imagePreview(view, model.getBannerImage(), R.string.image_preview_error_series_banner);
+                MediaBase model = getModel();
+                if (model != null) {
+                    CompatUtil.INSTANCE.imagePreview(view, model.getBannerImage(), R.string.image_preview_error_series_banner);
+                }
                 break;
         }
     }
@@ -217,12 +220,18 @@ public class MediaActivity extends ActivityBase<MediaBase, MediaPresenter> imple
         super.onDestroy();
     }
 
-    private void setManageMenuItemIcon() {
-        if(model != null && model.getMediaListEntry() != null && manageMenuItem != null)
-            manageMenuItem.setIcon(CompatUtil.INSTANCE.getDrawable(this, R.drawable.ic_mode_edit_white_24dp));
+    private void setMenuItemIcons() {
+        MediaBase model = getModel();
+        if (model != null) {
+            if (model.getMediaListEntry() != null && manageMenuItem != null)
+                manageMenuItem.setIcon(CompatUtil.INSTANCE.getDrawable(this, R.drawable.ic_mode_edit_white_24dp));
+            if (malMenuItem != null)
+                malMenuItem.setVisible(model.getIdMal() > 0);
+        }
     }
 
     private void setFavouriteWidgetMenuItemIcon() {
+        MediaBase model = getModel();
         if(model != null && favouriteWidget != null)
             favouriteWidget.setModel(model);
     }
