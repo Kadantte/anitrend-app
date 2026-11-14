@@ -1,0 +1,29 @@
+name: Release Drafter
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+jobs:
+  update-release-draft:
+    permissions:
+      contents: write
+      pull-requests: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release Drafter
+        uses: release-drafter/release-drafter@v7
+        id: release_drafter
+        with:
+          config-name: release-drafter-config.yml
+          commitish: develop
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: version-update-and-push
+          client-payload: '{"version": "${{ steps.release_drafter.outputs.resolved_version }}"}'

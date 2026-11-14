@@ -1,0 +1,224 @@
+query UserNotifications($page: Int, $perPage: Int, $type: NotificationType, $typeIn: [NotificationType], $resetNotificationCount: Boolean = false) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      ... PageInfoFragment
+    }
+    notifications(type: $type, type_in: $typeIn, resetNotificationCount: $resetNotificationCount) {
+      ... AiringNotificationFragment
+      ... FollowingNotificationFragment
+      ... ActivityMessageNotificationFragment
+      ... ActivityMentionNotificationFragment
+      ... ActivityReplyNotificationFragment
+      ... ActivityLikeNotificationFragment
+      ... ActivityReplySubscribedNotificationFragment
+      ... ActivityReplyLikeNotificationFragment
+      ... ThreadCommentMentionNotificationFragment
+      ... ThreadCommentReplyNotificationFragment
+      ... ThreadCommentSubscribedNotificationFragment
+      ... ThreadCommentLikeNotificationFragment
+      ... ThreadLikeNotificationFragment
+      ... RelatedMediaAdditionNotificationFragment
+      ... MediaDataChangeNotificationFragment
+      ... MediaMergeNotificationFragment
+      ... MediaDeletionNotificationFragment
+    }
+  }
+}
+
+fragment AiringNotificationFragment on AiringNotification {
+  id
+  type
+  createdAt
+  contexts
+  episode
+  media {
+    ... MediaCoreFragment
+  }
+}
+
+fragment FollowingNotificationFragment on FollowingNotification {
+  id
+  type
+  createdAt
+  context
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ActivityMessageNotificationFragment on ActivityMessageNotification {
+  id
+  type
+  createdAt
+  context
+  activityId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ActivityMentionNotificationFragment on ActivityMentionNotification {
+  id
+  type
+  createdAt
+  context
+  activityId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ActivityReplyNotificationFragment on ActivityReplyNotification {
+  id
+  type
+  createdAt
+  context
+  activityId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ActivityLikeNotificationFragment on ActivityLikeNotification {
+  id
+  type
+  createdAt
+  context
+  activityId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ActivityReplySubscribedNotificationFragment on ActivityReplySubscribedNotification {
+  id
+  type
+  createdAt
+  context
+  activityId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ActivityReplyLikeNotificationFragment on ActivityReplyLikeNotification {
+  id
+  type
+  createdAt
+  context
+  activityId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ThreadCommentMentionNotificationFragment on ThreadCommentMentionNotification {
+  id
+  type
+  createdAt
+  context
+  thread {
+    id
+  }
+  commentId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ThreadCommentReplyNotificationFragment on ThreadCommentReplyNotification {
+  id
+  type
+  createdAt
+  context
+  thread {
+    id
+  }
+  commentId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ThreadCommentSubscribedNotificationFragment on ThreadCommentSubscribedNotification {
+  id
+  type
+  createdAt
+  context
+  thread {
+    id
+  }
+  commentId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ThreadCommentLikeNotificationFragment on ThreadCommentLikeNotification {
+  id
+  type
+  createdAt
+  context
+  thread {
+    id
+  }
+  commentId
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment ThreadLikeNotificationFragment on ThreadLikeNotification {
+  id
+  type
+  createdAt
+  context
+  thread {
+    id
+  }
+  user {
+    ... UserCoreFragment
+  }
+}
+
+fragment RelatedMediaAdditionNotificationFragment on RelatedMediaAdditionNotification {
+  id
+  type
+  createdAt
+  context
+  media {
+    ... MediaCoreFragment
+  }
+}
+
+fragment MediaDataChangeNotificationFragment on MediaDataChangeNotification {
+  id
+  type
+  createdAt
+  context
+  media {
+    ... MediaCoreFragment
+  }
+  reason
+}
+
+fragment MediaMergeNotificationFragment on MediaMergeNotification {
+  id
+  type
+  createdAt
+  context
+  media {
+    ... MediaCoreFragment
+  }
+  reason
+  deletedMediaTitles
+}
+
+fragment MediaDeletionNotificationFragment on MediaDeletionNotification {
+  id
+  type
+  createdAt
+  context
+  reason
+  deletedMediaTitle
+}

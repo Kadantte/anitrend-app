@@ -1,5 +1,5 @@
-# [ :biohazard: W.I.P v2.0 :biohazard: ] AniTrend v1.4.7 &nbsp; [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/AniTrend/anitrend-app/blob/master/LICENSE.md)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30a8f983c55541cbb504671ecc32786c)](https://www.codacy.com/app/wax911/anitrend-app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wax911/anitrend-app&amp;utm_campaign=Badge_Grade) &nbsp; [![Build Status](https://travis-ci.org/AniTrend/anitrend-app.svg?branch=master)](https://travis-ci.org/AniTrend/anitrend-app) &nbsp; [![Discord](https://img.shields.io/discord/314442908478472203.svg?color=%237289da&label=Join%20Anitrend%21&logo=discord&logoColor=%23fff)](https://discordapp.com/invite/2wzTqnF)
+# [ :biohazard: W.I.P v2.0 :biohazard: ] AniTrend &nbsp; [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/AniTrend/anitrend-app/blob/master/LICENSE.md)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/33c5d626e8e64f73a0aa8e7c2f645d7c)](https://www.codacy.com/gh/AniTrend/anitrend-app/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AniTrend/anitrend-app&amp;utm_campaign=Badge_Grade) &nbsp; [![android-unit-test](https://github.com/AniTrend/anitrend-app/actions/workflows/android-unit-test.yaml/badge.svg)](https://github.com/AniTrend/anitrend-app/actions/workflows/android-unit-test.yaml) &nbsp; [![Discord](https://img.shields.io/discord/314442908478472203.svg?color=%237289da&label=Join%20Anitrend%21&logo=discord&logoColor=%23fff)](https://discordapp.com/invite/2wzTqnF)
 
 Discover anime or manga with AniTrend which is a free [AniList](https://anilist.co) android client written in java.(AniTrend does not offer streaming capabilities, but official website links such as Hulu, Chrunchyroll, Netflix will be provided if available)
 
@@ -13,7 +13,7 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 
 ## Known Issues
 
-- Find all issues, feature requests, bugs and project road map [here](https://waffle.io/AniTrend/anitrend-app)
+- Find all issues, feature requests, bugs [here](https://github.com/AniTrend/anitrend-app/issues)
 
 ## Documentation
 

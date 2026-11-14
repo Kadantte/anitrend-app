@@ -1,26 +1,26 @@
-__Anitrend v2.0 Coming Soon [W.I.P]__ All v1.X updates will focus on major bug fixes as all resources are being moved to v2.0
+__AniTrend v2.0 Coming Soon [W.I.P]__ All __v1.x.x__ updates will focus on major bug fixes as all resources are being moved to __v2.0__
 
-__N.B__ v2.0 will be dropping support for Jellybean - Kitkat, due to missing or disabled _(TLS v1.2)_
-which can result in authentication errors [read more](https://github.com/square/okhttp/issues/2372)
+Read the **FAQ** for issues regarding NSFW and notifications. Goto **Options** -> **Extras** -> **About** -> **Frequently Asked Questions**
+> Please update your profile stats using [this](https://anilist.co/settings/lists) if you've been having issues loading your profile in AniTrend
 
-#### Enhancements
-- Minor UI tweaks, specifically view radius
+## What's Changed
 
-#### Bug Fixes
-- About page crashes
-- Episode duration always displaying TBA (Swap)
-- Missing notification type for subscribed activities (Mittens, Taichi)
+- Modernized Material 3 experiences across onboarding, account, profile, settings, studio, character, staff, media, and social interactions.
+- Improved paging, list state, replies, follow actions, profile actions, media-list editing, search, logging, startup flows, and navigation arguments.
+- Added state synchronization and mutation architecture improvements, ViewModel ownership, Koin boundary hardening, and generated GraphQL/Retrofit migrations.
+- Fixed feed and reply rendering, social interaction state, bottom-sheet and startup flows, authentication/profile actions, media browse propagation, and list stability.
+- Added Android 15 edge-to-edge support and completed AGP 9/buildSrc compatibility work.
+- Updated Kotlin, Gradle, Media3, GraphQL, Firebase, Koin, Glide, Fastlane, and related build dependencies.
+- Expanded onboarding, accessibility, settings, account, and localization coverage across supported languages.
 
-#### Current Issues
-- Clicking on @username shows mixed feed
-- Sometimes image slide count doesn't change when you slowly scroll horizontally in feeds
+### Current Issues
+- Gifs may show artifacts if more than one is playing at a given moment
 
-#### Special Thanks
-_Translators (minna arigato) & all of you lovely weebs <3_
+## Special Thanks
+> _Translators (minna arigato) & all of you lovely people <3_
 
-__Admins, Devs & Cutie Pies:__
-_Mittens, Switchums, Kuji, Moka, Flare, Silver, Mrspits4ever_
+### Awesome Supporters: __[join us](https://www.patreon.com/wax911)__
+> @artemisthemp @Bas @barbas @kdy @Golumpa @sirenondine @SilverFS @TamikoGotti @Trivernis @Reddragon7 @Mokacchi
 
-__Awesome Donators:__
-_Bas, Golumpa, artemisthemp, Trivernis, PeakZer0, KorenTeam, keiggard_
-
+### Admins, Devs & Cutie Pies: __[join us on discord](https://discord.gg/2wzTqnF)__
+> @YoussefHabri @Taichikuji @Mokacchi @Flarenyan @SilverFullbuster @mrspits4ever @SilverFS @Swap @Reddragon7 @flacks

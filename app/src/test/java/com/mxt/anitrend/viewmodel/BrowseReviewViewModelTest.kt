@@ -1,0 +1,227 @@
+package com.mxt.anitrend.viewmodel
+
+import com.mxt.anitrend.data.mapper.toReviewRecord
+import com.mxt.anitrend.graphql.generated.MediaType
+import com.mxt.anitrend.graphql.generated.ReviewSort
+import com.mxt.anitrend.data.store.mutation.RequestSequence
+import com.mxt.anitrend.data.store.review.InMemoryReviewStore
+import com.mxt.anitrend.data.store.review.ReviewQueryKey
+import com.mxt.anitrend.data.store.review.ReviewStoreChange
+import com.mxt.anitrend.domain.review.interactor.RateReviewInteractor
+import com.mxt.anitrend.model.entity.anilist.Review
+import com.mxt.anitrend.model.entity.container.body.PageContainer
+import com.mxt.anitrend.repository.BrowseRepository
+import com.mxt.anitrend.util.KeyUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class BrowseReviewViewModelTest {
+
+    private val testDispatcher = UnconfinedTestDispatcher()
+    private lateinit var browseRepository: BrowseRepository
+    private lateinit var reviewStore: InMemoryReviewStore
+    private lateinit var rateReviewInteractor: RateReviewInteractor
+
+    @Before
+    fun setUp() {
+        Dispatchers.setMain(testDispatcher)
+        browseRepository = mock(BrowseRepository::class.java)
+        reviewStore = InMemoryReviewStore()
+        rateReviewInteractor = mock(RateReviewInteractor::class.java)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
+
+    @Test
+    fun `initial state is Loading`() = runTest {
+        val vm = BrowseReviewViewModel(browseRepository = browseRepository, reviewStore = reviewStore, requestSequence = RequestSequence(), rateReviewInteractor = rateReviewInteractor)
+        assertTrue(vm.state.value is BrowseReviewViewModel.UiState.Loading)
+    }
+
+    @Test
+    fun `load emits Success and defaults null sort`() = runTest {
+        val review = Review().apply {
+            id = 21L
+            media.type = MediaType.ANIME.name
+        }
+        val content = PageContainer<Review>().apply { pageData = listOf(review) }
+        val queryKey = ReviewQueryKey(mediaId = null, mediaType = MediaType.ANIME, sort = ReviewSort.CREATED_AT_DESC)
+        reviewStore.apply(
+            ReviewStoreChange.PageLoaded(
+                queryKey = queryKey,
+                page = 1,
+                token = 1L,
+                reviews = listOf(review.toReviewRecord(revision = 1L)),
+                pageInfo = null,
+            ),
+        )
+        doReturn(Result.success(content))
+            .`when`(browseRepository)
+            .getReviewBrowse(
+                page = 1,
+                perPage = KeyUtil.PAGING_LIMIT,
+                type = MediaType.ANIME,
+                sort = listOf(ReviewSort.CREATED_AT_DESC),
+                asHtml = false,
+                commitToStore = true,
+                queryKey = queryKey,
+                readToken = 1L,
+            )
+        val vm = BrowseReviewViewModel(browseRepository = browseRepository, reviewStore = reviewStore, requestSequence = RequestSequence(), rateReviewInteractor = rateReviewInteractor)
+        val collector = backgroundScope.launch { vm.state.collect {} }
+
+        vm.load(type = MediaType.ANIME, page = 1, sort = null)
+        advanceUntilIdle()
+
+        val state = vm.state.value as BrowseReviewViewModel.UiState.Success
+        assertEquals(listOf(21L), state.content.pageData.map { it.id })
+        verify(browseRepository).getReviewBrowse(
+            page = 1,
+            perPage = KeyUtil.PAGING_LIMIT,
+            type = MediaType.ANIME,
+            sort = listOf(ReviewSort.CREATED_AT_DESC),
+            asHtml = false,
+            commitToStore = true,
+            queryKey = queryKey,
+            readToken = 1L,
+        )
+        collector.cancel()
+    }
+
+    @Test
+    fun `load emits Error from repository failure`() = runTest {
+        val queryKey = ReviewQueryKey(mediaId = null, mediaType = null, sort = ReviewSort.CREATED_AT_DESC)
+        doReturn(Result.failure<PageContainer<Review>>(RuntimeException("Reviews failed")))
+            .`when`(browseRepository)
+            .getReviewBrowse(
+                page = 1,
+                perPage = KeyUtil.PAGING_LIMIT,
+                type = null,
+                sort = listOf(ReviewSort.CREATED_AT_DESC),
+                asHtml = false,
+                commitToStore = true,
+                queryKey = queryKey,
+                readToken = 1L,
+            )
+        val vm = BrowseReviewViewModel(browseRepository = browseRepository, reviewStore = reviewStore, requestSequence = RequestSequence(), rateReviewInteractor = rateReviewInteractor)
+        val collector = backgroundScope.launch { vm.state.collect {} }
+
+        vm.load(type = null, page = 1, sort = null)
+        advanceUntilIdle()
+
+        val state = vm.state.value as BrowseReviewViewModel.UiState.Error
+        assertEquals("Reviews failed", state.message)
+        collector.cancel()
+    }
+
+    @Test
+    fun `rated review committed to store updates rendered state`() = runTest {
+        val queryKey = ReviewQueryKey(mediaId = null, mediaType = MediaType.ANIME, sort = ReviewSort.CREATED_AT_DESC)
+        val review = Review().apply {
+            id = 11L
+            media.type = MediaType.ANIME.name
+            rating = 10
+        }
+        val updatedReview = Review().apply {
+            id = 11L
+            media.type = MediaType.ANIME.name
+            rating = 42
+            ratingAmount = 5
+        }
+        val vm = BrowseReviewViewModel(browseRepository = browseRepository, reviewStore = reviewStore, requestSequence = RequestSequence(), rateReviewInteractor = rateReviewInteractor)
+        val collector = backgroundScope.launch { vm.state.collect {} }
+
+        reviewStore.apply(
+            ReviewStoreChange.PageLoaded(
+                queryKey = queryKey,
+                page = 1,
+                token = 1L,
+                reviews = listOf(review.toReviewRecord(revision = 1L)),
+                pageInfo = null,
+            ),
+        )
+        doReturn(Result.success(PageContainer<Review>().apply { pageData = listOf(review) }))
+            .`when`(browseRepository)
+            .getReviewBrowse(
+                page = 1,
+                perPage = KeyUtil.PAGING_LIMIT,
+                type = MediaType.ANIME,
+                sort = listOf(ReviewSort.CREATED_AT_DESC),
+                asHtml = false,
+                commitToStore = true,
+                queryKey = queryKey,
+                readToken = 1L,
+            )
+
+        vm.load(type = MediaType.ANIME, page = 1, sort = null)
+        advanceUntilIdle()
+        reviewStore.apply(ReviewStoreChange.ReviewRated(updatedReview.toReviewRecord(revision = 1L), revision = 1L))
+        advanceUntilIdle()
+
+        val state = vm.state.value as BrowseReviewViewModel.UiState.Success
+        assertEquals(42, state.content.pageData.first().rating)
+        collector.cancel()
+    }
+
+    @Test
+    fun `rating sort key mutation surfaces stale in Success state`() = runTest {
+        val sortKey = ReviewQueryKey(mediaId = null, mediaType = MediaType.ANIME, sort = ReviewSort.RATING)
+        val review = Review().apply {
+            id = 11L
+            media.type = MediaType.ANIME.name
+            rating = 10
+        }
+        val content = PageContainer<Review>().apply { pageData = listOf(review) }
+        doReturn(Result.success(content))
+            .`when`(browseRepository)
+            .getReviewBrowse(
+                page = 1,
+                perPage = KeyUtil.PAGING_LIMIT,
+                type = MediaType.ANIME,
+                sort = listOf(ReviewSort.RATING),
+                asHtml = false,
+                commitToStore = true,
+                queryKey = sortKey,
+                readToken = 1L,
+            )
+        val vm = BrowseReviewViewModel(browseRepository = browseRepository, reviewStore = reviewStore, requestSequence = RequestSequence(), rateReviewInteractor = rateReviewInteractor)
+        val collector = backgroundScope.launch { vm.state.collect {} }
+
+        reviewStore.apply(
+            ReviewStoreChange.PageLoaded(
+                queryKey = sortKey,
+                page = 1,
+                token = 1L,
+                reviews = listOf(review.toReviewRecord(revision = 1L)),
+                pageInfo = null,
+            ),
+        )
+        vm.load(type = MediaType.ANIME, page = 1, sort = "RATING")
+        advanceUntilIdle()
+        reviewStore.apply(ReviewStoreChange.ReviewRated(review.toReviewRecord(revision = 2L).copy(rating = 42), revision = 2L))
+        advanceUntilIdle()
+
+        val state = vm.state.value as BrowseReviewViewModel.UiState.Success
+        assertTrue(state.isStale)
+        assertEquals(42, state.content.pageData.first().rating)
+        collector.cancel()
+    }
+}

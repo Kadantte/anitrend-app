@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_search"
@@ -45,10 +44,10 @@
                 app:showAsAction="ifRoom" />
 
             <item
-                android:id="@+id/action_donate"
+                android:id="@+id/action_support"
                 android:icon="@drawable/ic_patreon_logo"
                 android:orderInCategory="105"
-                android:title="@string/action_donate"
+                android:title="@string/action_support"
                 app:showAsAction="ifRoom" />
 
             <item

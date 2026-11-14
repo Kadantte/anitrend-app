@@ -5,25 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?colorSurface"
         android:theme="?attr/toolbarColor"
         app:popupTheme="@style/AppThemeLight.PopupOverlay" />
 
-    <com.miguelcatalan.materialsearchview.MaterialSearchView
+    <com.mxt.anitrend.base.custom.view.search.MaterialSearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor="?titleColor"
         android:textColorHint="?subtitleColor"
-        app:searchVoiceIcon="?voiceDrawable"
         app:searchSuggestionIcon="?suggestionDrawable"
-        app:searchSuggestionBackground="?colorPrimary"
-        app:searchCloseIcon="?closeDrawable"
+        app:searchSuggestionBackground="?colorSurface"
         app:searchBackIcon="?backDrawable"
-        app:searchBackground="?colorPrimary" />
+        app:searchBackground="?colorSurface" />
 
 </FrameLayout>

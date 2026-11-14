@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable name="onClickEvent" type="android.view.View.OnClickListener" />
-    </data>
-
-    <ViewFlipper
+    xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/widget_flipper"
         android:clickable="true"
         android:focusable="true"
@@ -17,8 +11,7 @@
         android:padding="@dimen/mg_margin"
         android:foreground="?selectableItemBackground"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClickListener="@{onClickEvent}">
+    android:layout_height="wrap_content">
 
         <com.mxt.anitrend.base.custom.view.image.AppCompatTintImageView
             android:id="@+id/widget_like"
@@ -27,13 +20,12 @@
             android:layout_height="@dimen/avatar_ripple_radius"
             tools:src="@drawable/ic_favorite_white_24dp" />
 
-        <com.github.rahatarmanahmed.cpv.CircularProgressView
-            android:layout_width="@dimen/xl_margin"
-            android:layout_height="@dimen/xl_margin"
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="@dimen/widget_spinner_compact_size"
+            android:layout_height="@dimen/widget_spinner_compact_size"
             android:layout_gravity="center"
-            app:cpv_animAutostart="true"
-            app:cpv_color="?colorAccent"
-            app:cpv_indeterminate="true" />
+            android:indeterminate="true"
+            app:indicatorColor="?colorAccent"
+            app:indicatorSize="@dimen/widget_spinner_compact_size" />
 
     </ViewFlipper>
-</layout>

@@ -1,10 +1,8 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:theme="@style/ThemeOverlay.Material3.Dark"
     android:fitsSystemWindows="true">
 
     <com.mxt.anitrend.base.custom.view.image.HeaderImageView

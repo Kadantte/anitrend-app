@@ -1,0 +1,241 @@
+/*
+ * Copyright (C) 2020  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+@file:Suppress("UnstableApiUsage")
+
+package com.mxt.anitrend.buildsrc.components
+
+import com.android.build.api.dsl.ApplicationBuildType
+import com.android.build.api.dsl.ApplicationExtension
+import com.mxt.anitrend.buildsrc.extensions.*
+import org.gradle.api.JavaVersion
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
+import org.gradle.api.logging.Logger
+import org.gradle.kotlin.dsl.exclude
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import java.util.*
+
+private fun Properties.applyToBuildConfigForBuild(buildType: ApplicationBuildType) {
+    forEach { propEntry ->
+        val key = propEntry.key as String
+        val value = propEntry.value as String
+        buildType.buildConfigField("String", key, value)
+    }
+}
+
+private fun Project.createSigningConfiguration(extension: ApplicationExtension) {
+    val keyStoreFile = project.file(".config/keystore.properties")
+    if (keyStoreFile.exists()) {
+        keyStoreFile.inputStream().use { fis ->
+            val properties = Properties().apply { load(fis) }
+            logger.lifecycle("${keyStoreFile.name} found, creating signing configuration")
+            extension.signingConfigs {
+                create("release") {
+                    logger.lifecycle("Creating signing configuration for $name")
+                    storeFile = file(properties["STORE_FILE"] as String)
+                    storePassword = properties["STORE_PASSWORD"] as String
+                    keyAlias = properties["STORE_KEY_ALIAS"] as String
+                    keyPassword = properties["STORE_KEY_PASSWORD"] as String
+                }
+            }
+        }
+    } else {
+        logger.lifecycle("${keyStoreFile.absolutePath} could not be found, release may fail")
+    }
+}
+
+private fun NamedDomainObjectContainer<ApplicationBuildType>.applyConfiguration(project: Project) {
+    asMap.forEach { buildTypeEntry ->
+        project.logger.lifecycle("Configuring build type -> ${buildTypeEntry.key}")
+        val buildType = buildTypeEntry.value
+
+        buildType.buildConfigField("String", "versionName", "\"${project.props[PropertyTypes.VERSION]}\"")
+        buildType.buildConfigField("int", "versionCode", project.props[PropertyTypes.CODE])
+
+        val secretsFile = project.file(".config/secrets.properties")
+        if (secretsFile.exists()) {
+            secretsFile.inputStream().use { fis ->
+                Properties().run {
+                    load(fis)
+                    applyToBuildConfigForBuild(buildType)
+                }
+            }
+        } else {
+            project.logger.lifecycle("${secretsFile.absolutePath} could not be found, build may fail")
+        }
+
+        val configurationFile = project.file(".config/configuration.properties")
+        if (configurationFile.exists()) {
+            configurationFile.inputStream().use { fis ->
+                Properties().run {
+                    load(fis)
+                    applyToBuildConfigForBuild(buildType)
+                }
+            }
+        } else {
+            project.logger.lifecycle("${configurationFile.absolutePath} could not be found, build may fail")
+        }
+    }
+}
+
+private fun ApplicationExtension.configureBuildFlavours(logger: Logger) {
+    flavorDimensions += "version"
+
+    productFlavors {
+        create("app") {
+            dimension = "version"
+            resValue("string", "flavor_description", "Playstore")
+        }
+        create("github") {
+            dimension = "version"
+            versionNameSuffix = "-github"
+            resValue("string", "flavor_description", "Github")
+        }
+    }
+}
+
+private fun ApplicationExtension.setUpWith(project: Project) {
+    compileSdk = 37
+    defaultConfig {
+        applicationId = "com.mxt.anitrend"
+        minSdk = 23
+        targetSdk = 37
+        versionCode = project.props[PropertyTypes.CODE].toInt()
+        versionName = project.props[PropertyTypes.VERSION]
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    project.createSigningConfiguration(this)
+    buildFeatures {
+        dataBinding = false
+        viewBinding = true
+        buildConfig = true
+        resValues = true
+    }
+
+    val releaseSigningConfig = signingConfigs.findByName("release")
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+            if (releaseSigningConfig != null) {
+                project.logger.lifecycle("Applying signing configuration to build type: $name")
+                signingConfig = releaseSigningConfig
+            }
+        }
+
+        getByName("debug") {
+            isMinifyEnabled = false
+        }
+
+        applyConfiguration(project)
+
+        configureBuildFlavours(project.logger)
+    }
+
+    packaging {
+        resources.excludes.add("META-INF/NOTICE.*")
+        resources.excludes.add("META-INF/LICENSE*")
+        // Exclude potential duplicate kotlin_module files
+        resources.excludes.add("META-INF/*kotlin_module")
+        // Exclude consumer proguard files
+        resources.excludes.add("META-INF/proguard/*")
+        // Exclude AndroidX version files
+        resources.excludes.add("META-INF/*.version")
+        // Exclude the Firebase/Fabric/other random properties files
+        resources.excludes.add("META-INF/*.properties")
+        resources.excludes.add("/*.properties")
+        resources.excludes.add("fabric/*.properties")
+    }
+
+    sourceSets {
+        all {
+            kotlin.directories.add("src/$name/kotlin")
+        }
+    }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+
+    lint {
+        abortOnError = false
+        ignoreWarnings = false
+        ignoreTestSources = true
+        disable.add("EnsureInitializerMetadata")
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+}
+
+internal fun Project.applyAndroidConfiguration() {
+    val extension = baseExtension()
+
+    extension.setUpWith(this)
+
+    androidComponents().onVariants { variant ->
+        variant.outputs.forEach { output ->
+            val original = output.outputFileName.get()
+            val destination = if (variant.name != "github-release") {
+                original.substring(4)
+            } else {
+                original
+            }
+            logger.lifecycle("Configuring build output build -> name: ${variant.name} | output: $destination")
+            output.outputFileName.set(destination)
+        }
+    }
+
+    configurations.all {
+        exclude("org.jetbrains", "annotations-java5")
+        resolutionStrategy.force(
+            "com.google.code.findbugs:jsr305:3.0.2",
+            libs.square.okhttp,
+            libs.square.logging,
+            libs.square.mockServer,
+        )
+    }
+
+    tasks.withType(KotlinJvmCompile::class.java) {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+        }
+    }
+
+    tasks.withType(KotlinCompile::class.java) {
+        val compilerArgumentOptions = mutableListOf(
+            "-opt-in=kotlin.ExperimentalStdlibApi",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.FlowPreview",
+        )
+
+        compilerOptions {
+            allWarningsAsErrors.set(false)
+            // Filter out modules that won't be using coroutines
+            freeCompilerArgs.addAll(compilerArgumentOptions)
+        }
+    }
+}

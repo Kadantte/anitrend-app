@@ -1,0 +1,15 @@
+query StaffRoles($id: Int!, $onList: Boolean, $page: Int, $perPage: Int, $sort: [MediaSort] = POPULARITY, $type: MediaType) {
+  Staff(id: $id) {
+    staffMedia(onList: $onList, page: $page, perPage: $perPage, type: $type, sort: $sort) {
+      pageInfo {
+        ... PageInfoFragment
+      }
+      edges {
+        staffRole
+        node {
+          ... MediaCoreFragment
+        }
+      }
+    }
+  }
+}

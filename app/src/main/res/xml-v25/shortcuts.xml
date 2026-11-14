@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shortcuts xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<shortcuts>
 
 <!--    <shortcut
         android:enabled="false"
@@ -10,7 +9,7 @@
         android:shortcutDisabledMessage="@string/info_login_req">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.mxt.anitrend.view.activity.detail.NotificationActivity"
+        android:targetClass="com.mxt.anitrend.view.activity.index.MainActivity"
             android:targetPackage="com.mxt.anitrend" />
     </shortcut>
 
@@ -22,7 +21,7 @@
         android:shortcutDisabledMessage="@string/info_login_req">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.mxt.anitrend.view.activity.detail.ProfileActivity"
+            android:targetClass="com.mxt.anitrend.view.activity.index.MainActivity"
             android:targetPackage="com.mxt.anitrend" />
     </shortcut>-->
 

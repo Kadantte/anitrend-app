@@ -52,6 +52,9 @@
     <color name="colorTextDark">#424242</color>
     <color name="colorTextDark2nd">#757575</color>
     <color name="colorTextGrey">#9e9e9e</color>
+    <!-- Legacy aliases used by older styles/drawables -->
+    <color name="grey">@color/colorGrey600</color>
+    <color name="grey_light">@color/colorGreyLight</color>
 
     <color name="colorTextTitleDark">@color/colorTextLight</color>
     <color name="colorTextSubtitleDark">@color/colorTextGrey2nd</color>
@@ -73,5 +76,13 @@
     <color name="divider">#1f000000</color> <!-- 12% black -->
 
     <color name="toolbar_transparent">#50000000</color>
+
+    <!-- Composer semantic theme values. -->
+    <color name="composer_violet_light">#7C3AED</color>
+    <color name="composer_violet_dark">#8B5CF6</color>
+    <color name="composer_on_violet_light">#FFFFFF</color>
+    <color name="composer_on_violet_dark">#FFFFFF</color>
+
+    <color name="white">#FFFFFF</color>
 
 </resources>

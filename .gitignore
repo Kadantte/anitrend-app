@@ -133,10 +133,29 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/androidstudio
 
-# Credentials File
-secrets.properties
-
-# Google services local configuration
-app/google-services.json
-
 .directory
+
+.idea/material_theme_project_new.xml
+
+.idea/runConfigurations.xml
+
+playstore-service-account.json
+
+.idea/appInsightsSettings.xml
+
+.idea/deploymentTargetSelector.xml
+
+.idea/studiobot.xml
+/.idea/AndroidProjectSystem.xml
+
+# Local worktrees
+.worktrees/
+# Added by code-review-graph
+.code-review-graph/
+
+# Deepwork session state
+.slim/deepwork/
+
+# Python cache files
+__pycache__/
+*.pyc

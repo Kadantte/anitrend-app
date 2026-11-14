@@ -88,58 +88,6 @@
 
     <string name="Watch">Kolla på</string>
 
-    <!--Try to keep all titles short and do not change the order of the <itmediaTagstags-->
-    <string-array name="feed_titles">
-        <item>Framsteg</item>
-        <item>Status</item>
-        <item>offentlig status</item>
-    </string-array>
-
-    <!--Try to keep all titles short-->
-    <string-array name="seasons_titles">
-        <item>vinter</item>
-        <item>vår</item>
-        <item>sommar</item>
-        <item>höst</item>
-    </string-array>
-
-    <!--Try to keep all titles short-->
-    <string-array name="trending_title">
-        <item>tittas på</item>
-        <item>nyligen tillagd</item>
-    </string-array>
-
-    <!--Try to keep all titles short-->
-    <string-array name="airing_title">
-        <item>vädring anime</item>
-        <item>senaste episoderna</item>
-    </string-array>
-
-    <!--Try to keep all titles short-->
-    <string-array name="manga_title">
-        <item>manga lista</item>
-        <item>nyligen tillagd</item>
-    </string-array>
-
-    <!--Try to keep all titles short-->
-    <string-array name="search_titles_auth">
-        <item>anime</item>
-        <item>manga</item>
-        <item>studio</item>
-        <item>personal</item>
-        <item>karaktär</item>
-        <item>användare</item>
-    </string-array>
-
-    <!--Try to keep all titles short-->
-    <string-array name="search_titles">
-        <item>anime</item>
-        <item>manga</item>
-        <item>studio</item>
-        <item>karaktär</item>
-        <item>användare</item>
-    </string-array>
-
     <!--First time usage intro screen-->
     <string name="get_started">Komma igång</string>
     <string name="app_intro_colors_title">Färgstater</string>
@@ -149,11 +97,50 @@
     <string name="app_intro_search_title">Sökande</string>
     <string name="app_intro_search_text">Anime, Manga &amp; Mer sökfunktionalitet!</string>
     <string name="app_intro_videos_title">Videoklipp</string>
-    <string name="app_intro_videos_text">Använda Inbyggd Youtube Video Player!</string>
-    <string name="app_greeting">Välkommen till AniTrend!</string>
+    <!-- Intro screen text describing the built-in video player -->
+    <string name="app_intro_videos_text">Använder inbyggd YouTube-videospelare!</string>
+    <!-- Greeting shown at the end of onboarding; clarifies that the app is not a streaming service -->
+    <string name="app_greeting">Välkommen till AniTrend, detta är inte en streaming-app!</string>
+
+    <!-- Action label on the onboarding button before the final page; advances to the next page -->
+    <string name="action_onboarding_continue">Fortsätt</string>
+    <!-- Status chip label in the onboarding heroes; shows the "watching" list status -->
+    <string name="label_onboarding_status_watching">Tittar på</string>
+    <!-- Status chip label in the onboarding heroes; shows the "completed" list status -->
+    <string name="label_onboarding_status_completed">Slutförd</string>
+    <!-- Status chip label in the onboarding heroes; shows the "plan to watch" list status -->
+    <string name="label_onboarding_status_plan_to_watch">Planerad</string>
+    <!-- Status chip label in the onboarding heroes; shows the "dropped" list status -->
+    <string name="label_onboarding_status_dropped">Övergiven</string>
+    <!-- Status chip label in the onboarding heroes; shows the "on hold" list status -->
+    <string name="label_onboarding_status_on_hold">Pausad</string>
+    <!-- Status chip label in the onboarding heroes; shows the "rewatching" list status -->
+    <string name="label_onboarding_status_rewatching">Tittar igen</string>
+
+    <!-- Placeholder text in the search bar mockup of the onboarding searching hero -->
+    <string name="placeholder_onboarding_search">Sök anime, manga...</string>
+    <!-- Example search result in the onboarding searching hero; Jujutsu Kaisen is an anime title -->
+    <string name="label_onboarding_search_result_jujutsu_kaisen">Jujutsu Kaisen</string>
+    <!-- Example search result in the onboarding searching hero; One Piece is an anime title -->
+    <string name="label_onboarding_search_result_one_piece">One Piece</string>
+
+    <!-- First onboarding page description; friendly benefit-led copy about discovering, tracking, and organizing anime and manga -->
+    <string name="description_onboarding_welcome">Upptäck nya favoriter, följ dina framsteg och samla alla dina anime- och mangalistor på ett ställe.</string>
+    <!-- Colors page description; explains the color coding of anime/manga list statuses -->
+    <string name="description_onboarding_colors">Se snabbt vad du tittar på, har slutfört eller planerar att titta på med intuitiv färgkodning.</string>
+    <!-- Content page description; explains the browsable catalog -->
+    <string name="description_onboarding_content">Bläddra bland tusentals titlar med detaljerad information, betyg, säsongslistor och uppgifter om medverkande, uppdaterade dagligen.</string>
+    <!-- Searching page description; explains search and filter capabilities -->
+    <string name="description_onboarding_searching">Kraftfull sökning med filter för genre, år, studio och status så att du hittar exakt det du söker.</string>
+    <!-- Final onboarding page title; introduces managing anime and manga lists -->
+    <string name="title_onboarding_manage">Hantera din lista</string>
+    <!-- Final onboarding page description; long-pressing an anime or manga item opens list management for status, progress, and details -->
+    <string name="description_onboarding_manage">Tryck och håll på valfri anime eller manga för att hantera status, framsteg och detaljer.</string>
 
     <!--Filter menu entry these are the dialog titles-->
     <string name="app_filter_sort">Sortera efter?</string>
+    <!-- Dialog title asking whether the series is already on the user's list -->
+    <string name="app_filter_on_list">På min lista?</string>
     <string name="app_filter_order">Sortera efter?</string>
     <string name="app_filter_genres">Serie Genrer?</string>
     <string name="app_filter_show_type">Serie Typ?</string>
@@ -172,19 +159,13 @@
 		<![CDATA[
         <p>
         <b>AniTrend</b> har misslyckats med att verifiera med servern mer än en gång! Kontrollera att din internetanslutning är
-         igång och kontrollera även om <a href="https://anilist.co"><b>Anilist hemsida</b></a> är tillgänglig innan du trycker på JA!
+         igång och kontrollera även om <a href=\"https://anilist.co\"><b>Anilist hemsida</b></a> är tillgänglig innan du trycker på JA!
         </p>
 
       Om webbplatsen är tillgänglig skulle du vilja <b>AniTrend</b> att återställa sig genom att logga ut, förutsatt att du var inloggad tidigare?
          Du måste bara logga in igen.
         ]]>
 	</string>
-
-    <!--Do not Translate, native anilist strings-->
-    <string-array name="order_by_types">
-        <item>Ascending</item>
-        <item>Descending</item>
-    </string-array>
 
     <!--You can translate this just try to keep the meaning consistent :)-->
     <string name="campaign_link">
@@ -206,34 +187,33 @@
         ]]>
 	</string>
 
-    <string name="app_intro_guide">
-		<![CDATA[
-        <p>Du kan se detaljerna för något av ovanstående listor genom att trycka på bilden eller kortet,
-         Du kan också logga in på programmet med ditt AniList-konto för att få tillgång till fler funktioner!</p>
-
-        Om du inte har ett AniList-konto kommer programmet att ge dig möjlighet att registrera dig från inloggningsskärmen
-        ]]>
-	</string>
-    <string name="app_intro_title">Hur?</string>
+    <!-- translators: This copy is shown on the full-screen onboarding card (the final
+     welcome card). It explains that tapping a card lets users explore anime and
+     manga, and that signing in with AniList lets them manage their lists. -->
+    <string name="app_intro_guide">Tryck på ett kort för att utforska anime och manga. Logga in med AniList för att hantera dina listor.</string>
+    <!-- translators: Heading for the full-screen onboarding card, shown directly above
+         the guide text. -->
+    <string name="app_intro_title">Kom igång</string>
 
     <string name="login_welcome_title">Välkommen %s</string>
 
     <string name="login_welcome_text">Du är inloggat</string>
 
     <!--Anything with drawer_title is the titles for the navigation drawer-->
-    <string name="drawer_title_home">Statusmatningar</string>
+    <!-- Navigation drawer title for the status feeds screen -->
+    <string name="drawer_title_home">Statusflöden</string>
     <string name="drawer_title_anime">Upptäck Anime</string>
     <string name="drawer_title_manga">Upptäck Manga</string>
-    <string name="drawer_title_trending">Vad är i Trending</string>
+    <!-- Navigation drawer title for the trending screen -->
+    <string name="drawer_title_trending">Trendar just nu</string>
     <string name="drawer_title_airing">Pågående Anime</string>
     <string name="drawer_title_myanime">Min anime lista</string>
     <string name="drawer_title_mymanga">Min manga lista</string>
-    <string name="drawer_title_reviews">RSerie Recensioner</string>
+    <!-- Navigation drawer title for the series reviews screen -->
+    <string name="drawer_title_reviews">Serierecensioner</string>
 
     <string name="drawer_section_configuration">Konfiguration</string>
     <string name="drawer_title_filter">Filtrera</string>
-    <string name="drawer_light_theme">Byt tema</string>
-    <string name="drawer_title_style">Växla stil</string>
 
     <string name="drawer_section_account">Konto</string>
     <string name="drawer_title_sign_in">Logga in</string>
@@ -279,10 +259,12 @@
     <string name="attach_webm_text">Ange länk där videon kan hittas, t ex: http://dl1.webmfiles.org/big-buck-bunny_trailer.webm</string>
 
     <!--Activity / Screen Names-->
-    <string name="title_activity_notification">Anmälningsnav</string>
+    <!-- Screen title of the notification hub -->
+    <string name="title_activity_notification">Anmälningshubb</string>
     <string name="title_activity_user_list_view">Användarlistor</string>
     <string name="title_activity_settings">Inställningar</string>
-    <string name="title_activity_reply">Svara Kompositör</string>
+    <!-- Screen title of the reply composer -->
+    <string name="title_activity_reply">Svara</string>
 
     <string name="notification_default">Odefinierad aktivitet</string>
     <string name="notification_series">Ny episod luftas</string>
@@ -307,68 +289,17 @@
     <string name="pref_header_general">Allmän</string>
     <string name="pref_header_general_summary">Konfigurera grundläggande applikationsbeteende</string>
 
-    <string name="pref_title_auto_increment">Smarta framstegsökning</string>
-
-    <string name="pref_summary_auto_increment">
-        <![CDATA[
-        Öka automatiskt avsnittet eller kapitelnumret när du
-           knacka på den med nya liststilar på dina airing-, anime- och mangalistor,
-           snarare än att öppna en dialogruta.
-        ]]>
-    </string>
-
 
     <string name="pref_title_startup_page">Startsida</string>
 
-    <string-array name="pref_titles_menu_entries">
-        <item>Hem</item>
-        <item>Upptäck Anime</item>
-        <item>Upptäck Manga</item>
-        <item>Vad är i trend</item>
-        <item>Pågående anime</item>
-        <item>Min anime lista</item>
-        <item>Min Manga Lista</item>
-        <item>AniTrend Hub</item>
-        <item>Serie Recensioner</item>
-    </string-array>
-
-    <string-array name="pref_values_menu_entries">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-    </string-array>
-
     <!-- Settings for update channel to use -->
     <string name="pref_title_update_channel">Uppdateringskanal</string>
-
-    <string-array name="pref_titles_channel_entries">
-        <item>Stabil</item>
-        <item>Beta (Experimentell)</item>
-    </string-array>
-
-    <!-- Do Not Translate This -->
-    <string-array name="pref_values_channel_entries">
-        <item>master</item>
-        <item>develop</item>
-    </string-array>
-
 
     <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Anmälningar</string>
     <string name="pref_header_notifications_summary">Konfigurera hur meddelanden hanteras</string>
 
     <string name="pref_title_new_message_notifications">Nya meddelandemeddelanden</string>
-    <string name="pref_key_new_message_notifications">notifications_new_message</string>
-
-    <string name="pref_title_ringtone">Meddelande ringsignal</string>
-
-    <string name="pref_ringtone_silent">Tyst</string>
 
 
     <!-- Settings for Data & Sync &amp; is the html equivalent of &-->
@@ -378,23 +309,6 @@
     <string name="pref_title_sync_frequency">Synkroniseringsfrekvens</string>
 
     <string name="pref_title_system_sync_settings">System synkroniseringsinställningar</string>
-
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minuter</item>
-        <item>30 minuter</item>
-        <item>1 timme</item>
-        <item>3 timmar</item>
-        <item>6 timmar</item>
-    </string-array>
-
-    <!--These are the actual value of the titles above, obviously no translation required here-->
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-    </string-array>
 
     <!--Another lmessageBasesage using a bit of html thmediaTagstags represent new paragraphs-->
 
@@ -407,7 +321,8 @@
 
     <string name="dialog_unfollow_message">Du håller på att följa upp den här användaren, är du säker på det här?</string>
 
-    <string name="info_login_req">¡Vänligen logga in för att komma åt den här funktionen!</string>
+    <!-- Message asking the user to sign in to use a feature -->
+    <string name="info_login_req">Vänligen logga in för att komma åt den här funktionen!</string>
     <string name="button_try_again">Försök igen</string>
 
     <string name="dialog_add_title">
@@ -430,9 +345,9 @@
 
     <string name="drawer_update_text">
         <![CDATA[
-        Kontrollera om du har den senaste versionen. Om inte en nyare version laddas ner från <b><a href="https://github.com/AniTrend/anitrend-app/releases">AniTrend Repo</a></b>.
+        Kontrollera om du har den senaste versionen. Om inte en nyare version laddas ner från <b><a href=\"https://github.com/AniTrend/anitrend-app/releases\">AniTrend Repo</a></b>.
         <br/><br/>
-        <b>N.B.</b> Om du hämtade den här appen från <b><a href="https://play.google.com/store/apps/details?id=com.mxt.anitrend">Play Store</a></b>
+        <b>N.B.</b> Om du hämtade den här appen från <b><a href=\"https://play.google.com/store/apps/details?id=com.mxt.anitrend\">Play Store</a></b>
        då är det inte nödvändigt att använda den här funktionen. Vill du fortfarande fortsätta med att kontrollera &amp; uppdatering till den senaste version?
         ]]>
     </string>
@@ -448,7 +363,7 @@
         <p> Ser ut att appen återupptogs från ett oväntat tillstånd medan du behandlar din inloggningsinformation. Detta kan uppstå på lågdrivna enheter 1 GB RAM eller mindre.</p>
 
         Applikationen försöker nu starta om i hopp om att lösa felet, efter omstart, försök igen logga in, och om det här problemet kvarstår är du välkommen att gå över till
-        <a href="https://anilist.co/forum/thread/2081">AniTrend Forum Sida</a> för mer hjälp.
+        <a href=\"https://anilist.co/forum/thread/2081\">AniTrend Forum Sida</a> för mer hjälp.
         ]]>
     </string>
 
@@ -464,6 +379,9 @@
 
     <string name="text_confirm_exit">Tryck tillbaka igen för att lämna appen</string>
 
+    <!-- Toast shown after copying a URL to the clipboard -->
+    <string name="text_url_copied_to_clipboard">URL kopierad till urklipp</string>
+
     <string name="text_filter_applying">Använda ändringar...</string>
 
     <string name="text_filter_restriction">Filter som inte är tillämpliga på den här sidan</string>
@@ -478,17 +396,20 @@
     <string name="title_bottom_sheet_followers">Följare: %d</string>
     <string name="title_bottom_sheet_following">Följer: %d</string>
 
-    <string name="text_no_likes">Inget likes att visa</string>
+    <!-- Empty state shown when there are no likes to display -->
+    <string name="text_no_likes">Inga likes att visa</string>
 
-    <string name="text_user_anime_time">Kollat på %s animes</string>
+    <!-- Profile stat showing anime watched; %s is the watch time -->
+    <string name="text_user_anime_time">Tittat på %s anime</string>
 
-    <string name="text_user_manga_chapters">Läst %s mangas</string>
+    <!-- Profile stat showing manga chapters read; %s is the chapter count -->
+    <string name="text_user_manga_chapters">Läst %s kapitel av manga</string>
 
     <string name="text_notification">%d Underrättelse</string>
     <string name="text_notifications">%d Anmälningar</string>
 
-    <string name="alerter_notification_title">Meddelanden tillgängliga</string>
-    <string name="alerter_notification_text">Du har en eller flera olästa anmälningar!</string>
+    <string name="notification_alert_title">Meddelanden tillgängliga</string>
+    <string name="notification_alert_text">Du har en eller flera olästa anmälningar!</string>
 
     <string name="title_new_features">Nya egenskaper!</string>
 
@@ -604,11 +525,15 @@
 
     <string name="dialog_action_null">Föremålet som skickades till DialogManager var null!</string>
 
-    <string name="text_unable_to_increment_episodes">Ökningspasset bortom totalt antal episoder inte tillåtet!</string>
-    <string name="text_unable_to_increment_chapters">Ökningskapitlar utöver totalkapitalantalet är inte tillåtna!</string>
+    <!-- Warning shown when episodes cannot be increased past the total -->
+    <string name="text_unable_to_increment_episodes">Det är inte tillåtet att öka avsnitt utöver det totala antalet avsnitt!</string>
+    <!-- Warning shown when chapters cannot be increased past the total -->
+    <string name="text_unable_to_increment_chapters">Det är inte tillåtet att öka kapitel utöver det totala antalet kapitel!</string>
 
-    <string name="title_anime_list">Användare Anime List</string>
-    <string name="title_manga_list">Användare Manga Lista</string>
+    <!-- Screen title for a user's anime list -->
+    <string name="title_anime_list">Användarens anime-lista</string>
+    <!-- Screen title for a user's manga list -->
+    <string name="title_manga_list">Användarens manga-lista</string>
     <string name="title_favourites_list">Användarnas favoriter</string>
     <string name="text_anime_episodes">%d episoder</string>
     <string name="text_anime_length">%d Minuter</string>
@@ -636,48 +561,62 @@
     <string name="menu_title_notifications">Anmälningar</string>
     <string name="menu_title_messages">Meddelanden</string>
     <string name="menu_title_create_status">Skapa status</string>
-    <string name="menu_title_compose_message">Skapa komponera meddelande</string>
+    <!-- Menu label for composing a new message -->
+    <string name="menu_title_compose_message">Skapa meddelande</string>
 
     <string name="menu_title_sorting">Sortering</string>
     <string name="menu_title_order">Ordning</string>
-    <string name="menu_title_genres">Benrer</string>
+    <!-- Menu label for the genres filter -->
+    <string name="menu_title_genres">Genrer</string>
     <string name="menu_title_formats">Typer</string>
     <string name="menu_title_year">År</string>
     <string name="menu_title_status">Status</string>
 
     <string name="menu_title_new_activity_post">Ny aktivitetspost</string>
     <string name="menu_title_changelog">Ändringslogg</string>
-    <string name="menu_title_about">Handla om</string>
+    <!-- Menu label opening the About screen -->
+    <string name="menu_title_about">Om</string>
     <string name="menu_title_help">Hjälp</string>
     <!--End of Menu labels-->
 
     <!--Reply or comment page when you tap the attach icon-->
     <string name="text_attach_link">Bifoga länk</string>
     <string name="text_attach_image">Bifoga bild</string>
-    <string name="text_youtube_link">Youtube Link</string>
-    <string name="text_webm_link">WebM Link</string>
+    <!-- Label for attaching a YouTube link -->
+    <string name="text_youtube_link">YouTube-länk</string>
+    <!-- Label for attaching a WebM video link -->
+    <string name="text_webm_link">WebM-länk</string>
 
     <!--Floating action button on the anime or manga pages, these are only displayed when the user long presses the icons-->
-    <string name="series_favourite_this">Favorit Detta</string>
+    <!-- Floating action button label for favouriting a series -->
+    <string name="series_favourite_this">Favoritera detta</string>
     <string name="series_add_to_list">Lägg till i lista</string>
     <string name="series_write_a_review">Skriva en recension</string>
     <string name="series_share">Dela</string>
+    <!-- Label shown when a series is on the user's list -->
+    <string name="series_on_my_list">På min lista</string>
 
     <!--Start of Dialog you use to add, remove or update anime or manga listings-->
     <string name="dialog_title_status">Status</string>
     <string name="dialog_title_episodes">Episoder</string>
     <string name="dialog_title_rewatched">Kollat Om</string>
-    <string name="dialog_title_score">Score</string>
+    <!-- Label for the score field in the manage list editor -->
+    <string name="dialog_title_score">Poäng</string>
     <string name="dialog_title_private">Privat</string>
-    <string name="dialog_title_increment_episodes">Ökningspisoder</string>
+    <!-- Button that increases the episode count in the manage list editor -->
+    <string name="dialog_title_increment_episodes">Öka avsnitt</string>
     <string name="dialog_hint_enter_your_notes">Ange dina anteckningar</string>
 
-    <string name="dialog_title_volumes_read">Volymer Läst</string>
-    <string name="dialog_title_chapters_read">Kapitler läst</string>
-    <string name="dialog_title_reread">Om Läst</string>
+    <!-- Label for the volumes read field in the manage list editor -->
+    <string name="dialog_title_volumes_read">Lästa volymer</string>
+    <!-- Label for the chapters read field in the manage list editor -->
+    <string name="dialog_title_chapters_read">Lästa kapitel</string>
+    <!-- Label for the reread field in the manage list editor -->
+    <string name="dialog_title_reread">Omläst</string>
 
     <!--More labels from profiles-->
-    <string name="text_top_genres">Top Genres:</string>
+    <!-- Label for the top genres list on the profile screen -->
+    <string name="text_top_genres">Toppgenrer:</string>
     <string name="text_tap_on_item_below_to_view_stats">Tryck på på objektet nedan för att se statistik!</string>
     <string name="following">Följer</string>
     <string name="followers">Följare</string>
@@ -687,67 +626,6 @@
     <string name="anime_time">Anime Tid</string>
     <string name="manga">Manga</string>
     <string name="chapters">Kapitel</string>
-
-    <!--Profile page titles-->
-    <string-array name="profile_page_titles">
-        <item>översikt</item>
-        <item>framsteg</item>
-        <item>status</item>
-    </string-array>
-
-    <!--Staff page titles-->
-    <string-array name="staff_page_titles">
-        <item>översikt</item>
-        <item>anime roller</item>
-        <item>manga roller</item>
-        <item>personal roller</item>
-    </string-array>
-
-    <!--Anime page titles-->
-    <string-array name="anime_page_titles">
-        <item>översikt</item>
-        <item>@string/title_relation</item>
-        <item>statistik</item>
-        <item>episoder</item>
-        <item>karaktär</item>
-        <item>personal</item>
-        <item>@string/title_social</item>
-        <item>recensioner</item>
-    </string-array>
-
-    <!--Manga page titles-->
-    <string-array name="manga_page_titles">
-        <item>översikt</item>
-        <item>@string/title_relation</item>
-        <item>statistik</item>
-        <item>karaktär</item>
-        <item>personal</item>
-        <item>@string/title_social</item>
-        <item>studior</item>
-    </string-array>
-
-    <!--Favourites page titles-->
-    <string-array name="favorites_page_titles">
-        <item>animes</item>
-        <item>karaktär</item>
-        <item>mangas</item>
-        <item>personal</item>
-        <item>studior</item>
-    </string-array>
-
-    <!--Character page titles-->
-    <string-array name="character_page_titles">
-        <item>översikt</item>
-        <item>anime roller</item>
-        <item>manga roller</item>
-        <item>skådespelare rollerr</item>
-    </string-array>
-
-    <!--Try to keep all titles short-->
-    <string-array name="hub_title">
-        <item>förslag</item>
-        <item>mest populär</item>
-    </string-array>
 
     <!-- Menu title for text composer -->
     <string name="action_attach">Fästa</string>
@@ -767,88 +645,35 @@
 
     <!-- Dialogs for check updates, etc -->
     <string name="title_download_info">Ladda ner Info!</string>
-    <string name="text_download_info">Uppdateringsfilen sparas i din nedladdningsmapp.</string>
-    <string name="title_update_infodadat">Uppdatera information!</string>
+    <string name="text_download_info">Objektet laddas ner till din nedladdningsmapp.</string>
+    <string name="title_update_info">Uppdatera information!</string>
 
     <!-- Sliding dialog that helps you select content type -->
     <string name="sheet_share_hint">Information att dela med</string>
     <string name="sheet_share_title">Formatera ditt statuspost</string>
     <string name="sheet_share_body">Beskriv innehållet i länken nedan.</string>
 
-    <!--Only replace the first item the others are already provided in this file-->
-    <string-array name="post_share_types">
-        <item>Oformatterad text</item>
-        <item>@string/attach_link_title</item>
-        <item>@string/attach_image_title</item>
-        <item>@string/attach_youtube_title</item>
-        <item>@string/attach_webm_title</item>
-    </string-array>
-
     <!--These are the anime time labels in your profile-->
     <string name="anime_time_hours">%.1f Timmar</string>
     <string name="anime_time_days">%.1f Dagar</string>
     <string name="anime_time_years">%.1f År</string>
-
-    <string-array name="media_status">
-        <item>Alla</item>
-        <item>Färdiga</item>
-        <item>Släpper</item>
-        <item>Inte släppts ännu</item>
-        <item>Avbruten</item>
-    </string-array>
-
-    <string-array name="anime_formats">
-        <item>Alla</item>
-        <item>TV</item>
-        <item>TV Kort</item>
-        <item>Film</item>
-        <item>Särskild</item>
-        <item>OVA</item>
-        <item>ONA</item>
-        <item>Musik</item>
-    </string-array>
-
-    <string-array name="manga_formats">
-        <item>Alla</item>
-        <item>Manga</item>
-        <item>Novel</item>
-        <item>One Shot</item>
-    </string-array>
-
-    <string-array name="reviews_title">
-        <item>@string/anime</item>
-        <item>@string/manga</item>
-    </string-array>
-
-    <string-array name="media_list_status">
-        <item>Current</item>
-        <item>Planning</item>
-        <item>Completed</item>
-        <item>Dropped</item>
-        <item>Paused</item>
-        <item>Repeating</item>
-    </string-array>
-
-    <string-array name="messages_page_titles">
-        <item>Inbox</item>
-        <item>Outbox</item>
-    </string-array>
 
     <string name="series_type">Serie Typ:</string>
     <string name="series_episodes">Episoder:</string>
     <string name="series_next_ep">Nästa avsnitt:</string>
     <string name="series_chapters">Kapitel:</string>
     <string name="series_volumes">Volymer:</string>
-    <string name="logged_in_as">Inloggad som</string>
 
-    <string name="sign_into_anilist">Logga in AniList</string>
+    <!-- Button that starts signing in with AniList -->
+    <string name="sign_into_anilist">Logga in på AniList</string>
 
     <string name="anitrend_sign_in">AniTrend inloggning</string>
     <string name="please_sing_in">Var god logga in</string>
 
-    <string name="action_donate">Donera</string>
+    <string name="action_support">Donera</string>
 
-    <string name="dialog_title_increment_chapters">AKapitalökning</string>
+    <!-- Button that increases the chapter count in the manage list editor -->
+    <string name="dialog_title_increment_chapters">Öka kapitel</string>
 
     <string name="title_activity_staff">Personal</string>
     <string name="title_activity_character">Karaktär</string>
@@ -856,16 +681,19 @@
 
     <string name="More">Mer</string>
 
-    <string name="title_bottom_sheet_giphy">Powered By Giphy</string>
+    <!-- Attribution label on the GIF picker bottom sheet -->
+    <string name="title_bottom_sheet_giphy">Drivs av Giphy</string>
 
     <string name="title_bookmark">Bokmärke</string>
 
     <string name="series_share_complete">Detaljerad</string>
     <string name="series_share_summary">Sammanfattning</string>
 
-    <string name="text_giphy_feature">Spice upp dina inlägg. Tryck bara för att välja och tryck länge för att förhandsgranska.</string>
+    <!-- Description of the GIF picker shown to new users -->
+    <string name="text_giphy_feature">Krydda dina inlägg. Tryck bara för att välja och tryck länge för att förhandsgranska.</string>
 
-    <string name="text_manga_volumes">%d Volymerna</string>
+    <!-- Series stat showing volume count; %d is the number of volumes -->
+    <string name="text_manga_volumes">%d Volymer</string>
     <string name="text_manga_chapters">%d Kapitel</string>
 
     <string name="title_series_status">Serie Status</string>
@@ -873,8 +701,10 @@
     <string name="title_series_score">Seriepoäng</string>
     <string name="title_series_origin">Serie Ursprung</string>
 
-    <string name="title_total_chapters">Total Chapters</string>
-    <string name="title_total_volumes">Total Volumes</string>
+    <!-- Label showing the total chapter count -->
+    <string name="title_total_chapters">Totalt antal kapitel</string>
+    <!-- Label showing the total volume count -->
+    <string name="title_total_volumes">Totalt antal volymer</string>
 
     <string name="title_total_episodes">Totalt antal episoder</string>
     <string name="title_episode_duration">Episodsvarighet</string>
@@ -883,7 +713,7 @@
     <string name="title_hash_tag">Hashtag</string>
     <string name="title_main_studio">Huvud Studio</string>
 
-    <string name="create_new_account"><![CDATA[Har du inget konto? <a href="https://anilist.co/register/">Skapa konto</a>]]></string>
+    <string name="create_new_account"><![CDATA[Har du inget konto? <a href=\"https://anilist.co/register/\">Skapa konto</a>]]></string>
 
     <string name="title_select_all">Välj alla</string>
 
@@ -920,55 +750,499 @@
     <string name="anitrend_sign_in_browser">Google Chrome rekommenderas</string>
 
     <!-- Privacy Settings -->
-    <string name="pref_header_privacy">Privacy</string>
-    <string name="pref_header_privacy_summary">Configure privacy settings</string>
+    <!-- Settings section header for privacy options -->
+    <string name="pref_header_privacy">Integritet</string>
+    <!-- Summary under the privacy settings section header -->
+    <string name="pref_header_privacy_summary">Konfigurera integritetsinställningar</string>
 
     <!-- Black Setting Related -->
-    <string name="pref_title_black_theme">Black Theme</string>
 
     <!--Language preferences-->
-    <string name="pref_title_language">Application Language</string>
-    <string name="pref_title_language_summary">Override system language and set your own application specific language</string>
+    <!-- Settings row for overriding the system language -->
+    <string name="pref_title_language">Applikationsspråk</string>
+    <!-- Summary under the application language setting -->
+    <string name="pref_title_language_summary">Åsidosätt systemets språk och välj ett eget språk för applikationen</string>
 
-    <string name="pref_title_crash_reports">Crash Reports</string>
-    <string name="pref_crash_reports_summary_off">Application will not send crash reports, please enable this option to make bug discovery and fixing easier</string>
-    <string name="pref_crash_reports_summary_on">Application will automatically send crash reports</string>
+    <!-- Settings row to enable or disable crash reports -->
+    <string name="pref_title_crash_reports">Kraschrapporter</string>
+    <!-- Summary shown when crash reports are disabled -->
+    <string name="pref_crash_reports_summary_off">Applikationen skickar inte kraschrapporter. Aktivera det här alternativet för att göra det enklare att upptäcka och åtgärda buggar</string>
+    <!-- Summary shown when crash reports are enabled -->
+    <string name="pref_crash_reports_summary_on">Applikationen skickar automatiskt kraschrapporter</string>
 
-    <string name="pref_title_usage_analytics">Usage Analytics</string>
-    <string name="pref_usage_analytics_summary_off">Application will not send any anonymous statistics on most used features, please consider enabling this option for better design choices in future</string>
-    <string name="pref_usage_analytics_summary_on">Application will only send anonymous statistics like most used features</string>
+    <!-- Settings row to enable or disable usage analytics -->
+    <string name="pref_title_usage_analytics">Användningsanalys</string>
+    <!-- Summary shown when usage analytics are disabled -->
+    <string name="pref_usage_analytics_summary_off">Applikationen skickar inte anonym statistik om mest använda funktioner. Överväg att aktivera det här alternativet för bättre designval i framtiden</string>
+    <!-- Summary shown when usage analytics are enabled -->
+    <string name="pref_usage_analytics_summary_on">Applikationen skickar endast anonym statistik som mest använda funktioner</string>
 
-    <string name="dialog_title_started_at">Start Date</string>
-    <string name="dialog_title_completed_at">Finish Date</string>
-    <string name="pref_header_customize">Customize</string>
-    <string name="pref_header_customize_summary">Customize the look and feel of the app</string>
-    <string name="text_application_restart_required">Please restart the application for changes to take effect</string>
-    <string name="dialog_button_clear">Clear</string>
+    <!-- Label for the start date field in the manage list editor -->
+    <string name="dialog_title_started_at">Startdatum</string>
+    <!-- Label for the finish date field in the manage list editor -->
+    <string name="dialog_title_completed_at">Slutdatum</string>
+    <!-- Settings section header for customization options -->
+    <string name="pref_header_customize">Anpassa</string>
+    <!-- Summary under the customize settings section header -->
+    <string name="pref_header_customize_summary">Anpassa appens utseende och känsla</string>
+    <!-- Message shown after changing settings that require an app restart -->
+    <string name="text_application_restart_required">Starta om applikationen för att ändringarna ska träda i kraft</string>
+    <!-- Button that clears a date field in the manage list editor -->
+    <string name="dialog_button_clear">Rensa</string>
 
     <!-- Image Preview strings -->
-    <string name="image_preview_title">Preview</string>
-    <string name="image_preview_download">Download</string>
-    <string name="image_preview_share">Share</string>
-    <string name="image_preview_link">Original Link</string>
+    <!-- Title of the image preview screen -->
+    <string name="image_preview_title">Förhandsvisning</string>
+    <!-- Button that downloads the previewed image -->
+    <string name="image_preview_download">Ladda ner</string>
+    <!-- Button that shares the previewed image -->
+    <string name="image_preview_share">Dela</string>
+    <!-- Row showing the original link of the previewed image -->
+    <string name="image_preview_link">Original länk</string>
 
     <!-- Image Preview error strings -->
-    <string name="image_preview_error_character_image">The character image doesn\'t exist!</string>
-    <string name="image_preview_error_profile_banner">The user has not set a banner image!</string>
-    <string name="image_preview_error_series_cover">The series cover image doesn\'t exist!</string>
-    <string name="image_preview_error_series_banner">The series banner image doesn\'t exist!</string>
-    <string name="image_preview_error_staff_image">The staff image doesn\'t exist!</string>
-    <string name="image_preview_error_user_avatar">The user\'s avatar image doesn\'t exist</string>
+    <!-- Error shown when the character image cannot be previewed -->
+    <string name="image_preview_error_character_image">Bilden för karaktären finns inte!</string>
+    <!-- Error shown when the profile banner cannot be previewed -->
+    <string name="image_preview_error_profile_banner">Användaren har inte angett en bannerbild!</string>
+    <!-- Error shown when the series cover cannot be previewed -->
+    <string name="image_preview_error_series_cover">Omslagsbilden för serien finns inte!</string>
+    <!-- Error shown when the series banner cannot be previewed -->
+    <string name="image_preview_error_series_banner">Bannerbilden för serien finns inte!</string>
+    <!-- Error shown when the staff image cannot be previewed -->
+    <string name="image_preview_error_staff_image">Bilden för personen finns inte!</string>
+    <!-- Error shown when the user avatar cannot be previewed -->
+    <string name="image_preview_error_user_avatar">Användarens avatar bild finns inte</string>
 
     <!-- App Log strings -->
-    <string name="app_log">App Logs</string>
-    <string name="save_bug_report">Save Bug Report</string>
-    <string name="bug_report_saved">Bug Report saved to Downloads Folder (AniTrend Logcat.txt)</string>
+    <!-- Screen title of the app log viewer -->
+    <string name="app_log">Apploggar</string>
+    <!-- Button that saves the log as a bug report file -->
+    <string name="save_bug_report">Spara felrapport</string>
+    <!-- Confirmation shown after the bug report file is saved; keep the file name in parentheses -->
+    <string name="bug_report_saved">Felrapport sparad i nedladdningsmappen (AniTrend Logcat.txt)</string>
 
-    <string name="show_spoiler_tags">Show Spoiler Tags</string>
-    <string name="notification_media_added">New Related Media Added</string>
+    <!-- Settings row to show or hide spoiler tags -->
+    <string name="show_spoiler_tags">Visa spoiler-taggar</string>
+    <!-- Notification title when related media is added to a series -->
+    <string name="notification_media_added">Ny relaterad media tillagd</string>
     <string name="title_activity_studio">Studio</string>
-    <string name="title_activity_message">Message Hub</string>
-    <string name="pref_black_theme_summary">Use black theme for devices that have OLED displays to save power</string>
+    <!-- Screen title of the message hub -->
+    <string name="title_activity_message">Meddelandehubb</string>
     <string name="nav_header_support">Support</string>
     <string name="drawer_title_hub">AniTrend Hub</string>
+    <!-- Error shown when the session token is invalid -->
+    <string name="text_error_auth_token">Ogiltig session, logga ut och logga in igen</string>
+    <!-- Message shown while the app database is being upgraded -->
+    <string name="text_migration_in_progress">Applikationen uppgraderas, vänligen vänta</string>
+    <!-- Title of the dialog shown when the app upgrade fails -->
+    <string name="title_migration_failed">Uppgraderingen misslyckades</string>
+    <!-- Body of the dialog shown when the app upgrade fails -->
+    <string name="text_migration_failed"><![CDATA[Applikationen kunde inte göra vissa ändringar under uppgraderingen. Rensa appens cache och data manuellt och försök igen]]></string>
+    <!-- Section header for general info on the About screen -->
+    <string name="text_about_general_information">Allmän information</string>
+    <string name="text_about_application_version">Version %s</string>
+    <!-- Section header for additional info on the About screen -->
+    <string name="text_about_additional_information">Ytterligare information</string>
+    <!-- About screen row that opens the FAQ page -->
+    <string name="text_about_frequently_asked_questions">Vanliga frågor</string>
+    <!-- Section header for legal info on the About screen -->
+    <string name="text_about_legal_information">Juridisk information</string>
+    <!-- About screen row that opens the terms and conditions -->
+    <string name="text_about_terms_and_conditions"><![CDATA[Villkor]]></string>
+    <!-- About screen row that opens the code of conduct -->
+    <string name="text_about_code_of_conduct">Uppförandekod</string>
+    <!-- Message shown while the app is updating on startup -->
+    <string name="text_migration_required">AniTrend uppdateras, detta tar en liten stund</string>
+    <!-- Screen title of the logging activity -->
+    <string name="title_activity_logging">Loggar</string>
+
+    <!-- Settings row to choose the app theme -->
+    <string name="pref_title_app_theme">Applikationstema</string>
+
+    <!-- Title of the dialog confirming activity deletion -->
+    <string name="dialog_title_delete_activity">Radera aktivitet</string>
+    <!-- Body of the activity deletion confirmation dialog -->
+    <string name="dialog_message_delete_activity">Är du säker på att du vill radera den här aktiviteten? Detta kan inte ångras!!</string>
+
+    <!-- Settings row to allow adult content -->
+    <string name="pref_title_display_adult_content">Visa vuxet innehåll</string>
+    <!-- Summary under the adult content setting -->
+    <string name="pref_summary_display_adult_content">Tillåt applikationen att visa NSFW-innehåll. För att detta ska fungera måste +18-innehåll vara aktiverat på AniList</string>
+
+    <!-- Summary under the mark-read-on-dismiss setting -->
+    <string name="pref_summary_clear_notification_on_dismiss">Markerar meddelanden som lästa när du avfärdar dem från statusfältet</string>
+    <!-- Settings row to mark notifications read when dismissed -->
+    <string name="pref_title_clear_notification_on_dismiss">Markera alla meddelanden som lästa vid avfärdande</string>
+
+    <!-- Summary under the notification workaround setting -->
+    <string name="pref_summary_notification_work_around">Aktivera endast om du inte får meddelanden</string>
+    <!-- Settings row enabling the notification workaround -->
+    <string name="pref_title_notification_work_around">Alternativ lösning för meddelanden</string>
+    <string name="title_bottom_sheet_spoiler">Spoiler</string>
+    <!-- Settings row to choose the list view style -->
+    <string name="pref_title_list_view_style">Listvisningsstil</string>
+    <!-- Notification action that marks a notification as read -->
+    <string name="notification_action_mark_as_read">Markera som läst</string>
+    <!-- Notification title when media entries are merged -->
+    <string name="notification_media_merge">Mediasammanslagning</string>
+    <!-- Notification title when media entries are deleted -->
+    <string name="notification_media_deletion">Mediaradering</string>
+    <!-- Notification title when media data is updated -->
+    <string name="notification_media_data_change">Mediauppdatering</string>
+    <!-- Screen title for the recommendations list -->
+    <string name="title_recommendations">Rekommendationer</string>
+
+    <!-- Manage list editor and validation strings -->
+    <!-- Confirmation message when removing a media list entry -->
+    <string name="dialog_remove_entry_message">Ta bort denna titel från din lista?</string>
+    <!-- Form validation: progress value cannot be negative -->
+    <string name="validation_progress_negative">Framsteg kan inte vara negativt</string>
+    <!-- Form validation: repeat count cannot be negative -->
+    <string name="validation_repeat_negative">Antal repetitioner kan inte vara negativt</string>
+    <!-- Inline warning when setting anime status to CURRENT while not yet aired -->
+    <string name="status_warning_not_aired">Denna titel har inte sänts än</string>
+    <!-- Inline warning when setting manga status to CURRENT while not yet published -->
+    <string name="status_warning_not_published">Denna titel har inte publicerats än</string>
+    <!-- Inline warning when setting anime status to COMPLETED while still airing -->
+    <string name="status_warning_still_airing">Denna titel sänds fortfarande</string>
+    <!-- Inline warning when setting manga status to COMPLETED while still publishing -->
+    <string name="status_warning_still_publishing">Denna titel publiceras fortfarande</string>
+    <!-- Button text for removing a media list entry -->
+    <string name="action_remove">Ta bort</string>
+    <!-- Section label for priority slider in manage list editor -->
+    <string name="dialog_title_priority">Prioritet (0-255)</string>
+    <!-- Switch label for hiding entry from status lists -->
+    <string name="dialog_title_hidden_from_status_lists">Dölj från statuslistor</string>
+    <!-- Section label for custom lists chips -->
+    <string name="dialog_title_custom_lists">Anpassade listor</string>
+    <!-- Section label for advanced scoring sliders -->
+    <string name="dialog_title_advanced_scores">Avancerade poäng</string>
+
+    <!-- Manage list editor: additional UI strings -->
+    <!-- Bottom sheet header subtitle when adding a new entry -->
+    <string name="sheet_title_add">Lägg till i lista</string>
+    <!-- Bottom sheet header subtitle when editing an existing entry -->
+    <string name="sheet_title_edit">Redigera listpost</string>
+    <!-- Primary action button in manage list editor -->
+    <string name="action_save">Spara</string>
+    <!-- Primary action button text for new entries -->
+    <string name="action_add_to_list">Lägg till i lista</string>
+    <!-- Content description for decrement stepper button -->
+    <string name="action_decrement">Minska värde</string>
+    <!-- Content description for increment stepper button -->
+    <string name="action_increment">Öka värde</string>
+    <!-- Supporting text under the "Hide from status lists" switch -->
+    <string name="hidden_from_status_lists_summary">Endast synlig i anpassade listor</string>
+    <!-- Section card title for status and score fields -->
+    <string name="section_status_score">Status &amp; poäng</string>
+    <!-- Section card title for progress fields -->
+    <string name="section_progress">Framsteg</string>
+    <!-- Section card title for date fields -->
+    <string name="section_dates">Datum</string>
+    <!-- Section card title for privacy and priority fields -->
+    <string name="section_privacy_priority">Integritet &amp; prioritet</string>
+    <!-- Section card title for notes field -->
+    <string name="section_notes">Anteckningar</string>
+
+
+    <!-- Screen-reader description for the add image button in the status composer -->
+    <string name="composer_add_image_description">Lägg till bild</string>
+
+    <!-- Screen-reader description for the add video button in the status composer -->
+    <string name="composer_add_video_description">Lägg till video</string>
+
+    <!-- Screen-reader description for the add link button in the status composer -->
+    <string name="composer_add_link_description">Lägg till länk</string>
+
+    <!-- Screen-reader description for the add YouTube video button in the status composer -->
+    <string name="composer_add_youtube_description">Lägg till YouTube-video</string>
+
+    <!-- Screen-reader description for the add GIF button in the status composer -->
+    <string name="composer_add_gif_description">Lägg till GIF</string>
+
+    <!-- Screen-reader description for the add emoticon button in the status composer -->
+    <string name="composer_add_emoticon_description">Lägg till emotikon</string>
+
+    <!-- Screen-reader description for the more actions button in the status composer -->
+    <string name="composer_more_actions_description">Fler åtgärder i kompositören</string>
+
+    <!-- Button that publishes the status post in the composer -->
+    <string name="composer_post">Publicera</string>
+
+    <!-- Screen-reader description of the reply recipient chip in the composer -->
+    <string name="composer_reply_recipient_description">Mottagare av svar</string>
+
+    <!-- Composer header showing who is being replied to; %s is the user name -->
+    <string name="composer_reply_to">Svarar på %s</string>
+
+    <!-- Hint text in the composer input when replying to a thread -->
+    <string name="composer_reply_hint">Lägg till i tråden...</string>
+
+    <!-- Screen-reader description for the send button in the message composer -->
+    <string name="composer_send_description">Skicka</string>
+
+    <!-- Screen-reader description announced while a message is being sent -->
+    <string name="composer_sending_description">Skickar</string>
+
+    <!-- Alias for the retry button label; keep pointing at button_try_again -->
+    <string name="try_again">@string/button_try_again</string>
+
+    <!-- Banner shown when series reviews may be out of date, offering a refresh -->
+    <string name="review_stale_message">Recensionerna kan vara inaktuella. Uppdatera för att se den senaste ordningen.</string>
+
+    <!-- Button that refreshes the review order on the stale reviews banner -->
+    <string name="review_stale_refresh">Uppdatera recensioner</string>
+
+    <!-- Accessibility state announced for an unread row in lists -->
+    <string name="layout_unread_state">Oläst</string>
+
+    <!-- Accessibility state announced when a settings switch is enabled -->
+    <string name="accessibility_switch_on">På</string>
+
+    <!-- Accessibility state announced when a settings switch is disabled -->
+    <string name="accessibility_switch_off">Av</string>
+
+    <!-- Screen-reader description for a settings choice row; %1$s is the setting title and %2$s its current value -->
+    <string name="settings_choice_content_description" formatted="true">%1$s, för närvarande %2$s</string>
+
+    <!-- Screen-reader description for a settings toggle row; %1$s is the setting title and %2$s is On or Off -->
+    <string name="settings_toggle_content_description" formatted="true">%1$s, växla %2$s</string>
+
+    <!-- Screen-reader description for an external link row on the About screen; %1$s is the link title -->
+    <string name="about_external_link_content_description" formatted="true">%1$s, öppnas i webbläsaren</string>
+
+    <!-- Screen-reader description for the What's new row on the About screen -->
+    <string name="about_whats_new_content_description">Vad är nytt, öppnar ändringsloggen</string>
+
+    <!-- Product name of the MyAnimeList website; do not translate -->
+    <string name="series_mal" translatable="false">MyAnimeList</string>
+
+    <!-- Section label for the notes field in the manage list editor -->
+    <string name="dialog_title_notes">Anteckningar</string>
+
+    <!-- Value shown for the priority slider in the manage list editor; %d is the numeric priority -->
+    <string name="priority_value">%d</string>
+
+    <!-- Title of the GIF preview dialog -->
+    <string name="title_giphy_preview">Giphy-förhandsvisning</string>
+
+    <!-- Message shown when a GIF preview cannot be displayed -->
+    <string name="title_preview_unavailable">Förhandsvisning inte tillgänglig</string>
+
+    <!-- Label for the latest release row in the About screen -->
+    <string name="label_latest_release">Senaste utgåvan</string>
+
+    <!-- Screen-reader description of the profile banner image -->
+    <string name="profile_banner_description">Profilens bannerbild</string>
+
+    <!-- Screen-reader description of the profile avatar image -->
+    <string name="profile_avatar_description">Profilens avatar</string>
+
+    <!-- Loading caption shown while the profile is being fetched -->
+    <string name="profile_loading">Laddar profil…</string>
+
+    <!-- Retry button shown on the profile error state -->
+    <string name="profile_retry">Försök igen</string>
+
+    <!-- Generic error shown when the profile request fails -->
+    <string name="profile_error_generic">Det gick inte att ladda den här profilen</string>
+
+    <!-- Error shown when the profile was opened without a valid user id or name -->
+    <string name="profile_error_no_user">Den här profilen kunde inte hittas</string>
+
+    <!-- Screen-reader description for the profile loading indicator -->
+    <string name="profile_loading_content_description">Laddar profil</string>
+
+    <!-- Loading caption shown while the studio is being fetched -->
+    <string name="studio_loading">Laddar studio…</string>
+
+    <!-- Retry button shown on the studio error state -->
+    <string name="studio_retry">Försök igen</string>
+
+    <!-- Generic error shown when the studio request fails -->
+    <string name="studio_error_generic">Det gick inte att ladda den här studion</string>
+
+    <!-- Screen-reader description for the studio loading indicator -->
+    <string name="studio_loading_content_description">Laddar studio</string>
+
+    <!-- Loading caption shown while the character is being fetched -->
+    <string name="character_loading">Laddar karaktär…</string>
+
+    <!-- Retry button shown on the character error state -->
+    <string name="character_retry">Försök igen</string>
+
+    <!-- Generic error shown when the character request fails -->
+    <string name="character_error_generic">Det gick inte att ladda den här karaktären</string>
+
+    <!-- Screen-reader description for the character loading indicator -->
+    <string name="character_loading_content_description">Laddar karaktär</string>
+
+    <!-- Loading caption shown while the staff member is being fetched -->
+    <string name="staff_loading">Laddar personal…</string>
+
+    <!-- Retry button shown on the staff error state -->
+    <string name="staff_retry">Försök igen</string>
+
+    <!-- Generic error shown when the staff member request fails -->
+    <string name="staff_error_generic">Det gick inte att ladda den här personen</string>
+
+    <!-- Screen-reader description for the staff loading indicator -->
+    <string name="staff_loading_content_description">Laddar personal</string>
+
+    <!-- Log level filter showing all log entries -->
+    <string name="log_filter_all">Alla</string>
+
+    <!-- Log level filter showing only error entries -->
+    <string name="log_filter_error">Fel</string>
+
+    <!-- Log level filter showing only warning entries -->
+    <string name="log_filter_warning">Varning</string>
+
+    <!-- Log level filter showing only info entries -->
+    <string name="log_filter_info">Info</string>
+
+    <!-- Log level filter showing only debug entries -->
+    <string name="log_filter_debug">Debug</string>
+
+    <!-- About screen row that opens the Play Store rating page -->
+    <string name="text_about_rate_play_store">Betygsätt på Play Store</string>
+
+    <!-- About screen row that opens the AniTrend Twitter profile -->
+    <string name="text_about_follow_twitter">Följ på Twitter</string>
+
+    <!-- About screen row that opens the AniTrend GitHub repository; brand name, do not translate -->
+    <string name="text_about_github">GitHub</string>
+
+    <!-- About screen row that opens the AniTrend website -->
+    <string name="text_about_website">Webbplats</string>
+
+    <!-- Settings section header for accessibility options -->
+    <string name="pref_header_accessibility">Tillgänglighet</string>
+
+    <!-- Summary under the accessibility settings section header -->
+    <string name="pref_header_accessibility_summary">Justera visningen efter tillgänglighetsbehov</string>
+
+    <!-- Settings section header for appearance options -->
+    <string name="pref_header_appearance">Utseende</string>
+
+    <!-- Summary under the appearance settings section header -->
+    <string name="pref_header_appearance_summary">Anpassa visuellt utseende och täthet</string>
+
+    <!-- Settings section header for content options -->
+    <string name="pref_header_content">Innehåll</string>
+
+    <!-- Summary under the content settings section header -->
+    <string name="pref_header_content_summary">Styr hur innehåll visas</string>
+
+    <!-- Settings row to choose the app accent color -->
+    <string name="pref_title_accent_color">Accentfärg</string>
+
+    <!-- Settings row to toggle auto-playing trailers -->
+    <string name="pref_title_autoplay">Autouppspelning av trailers</string>
+
+    <!-- Settings row to adjust the font scale -->
+    <string name="pref_title_font_scale">Teckenstorlek</string>
+
+    <!-- Settings row to enable high contrast mode -->
+    <string name="pref_title_high_contrast">Högkontrastläge</string>
+
+    <!-- Settings row to choose the list density -->
+    <string name="pref_title_list_density">Listtäthet</string>
+
+    <!-- Settings row to reduce animations and motion -->
+    <string name="pref_title_reduce_motion">Minska rörelse</string>
+
+    <!-- Settings row to choose how scores are displayed -->
+    <string name="pref_title_score_format">Poängformat</string>
+
+    <!-- Settings row to choose how spoilers are handled -->
+    <string name="pref_title_spoiler_behavior">Spoiler-beteende</string>
+
+    <!-- Settings row to choose the preferred language for series titles -->
+    <string name="pref_title_title_language">Föredraget titelspråk</string>
+
+    <!-- Placeholder summary shown for settings that are not implemented yet -->
+    <string name="pref_summary_placeholder">Kommer snart</string>
+
+    <!-- Hint text in the search field -->
+    <string name="search_hint">Sök</string>
+
+    <!-- Patreon campaign URL used for the support page; do not translate -->
+    <string name="patreon">https://www.patreon.com/wax911</string>
+
+    <!-- Settings section header for the signed-in AniList account -->
+    <string name="pref_header_account">Konto</string>
+
+    <!-- Summary under the account settings section header -->
+    <string name="pref_header_account_summary">Hantera din AniList-profil och listpreferenser</string>
+
+    <!-- Section header for profile fields on the account settings screen -->
+    <string name="account_section_profile">Profil</string>
+
+    <!-- Section header for list and content fields on the account settings screen -->
+    <string name="account_section_lists_content">Listor och innehåll</string>
+
+    <!-- Label for the public about/bio field on the account settings screen -->
+    <string name="account_title_about">Om</string>
+
+    <!-- Helper text under the about field explaining where the bio is shown -->
+    <string name="account_helper_about">Offentlig bio som visas på din AniList-profil</string>
+
+    <!-- Label for the profile color picker on the account settings screen -->
+    <string name="account_title_profile_color">Profilfärg</string>
+
+    <!-- Helper text under the profile color picker -->
+    <string name="account_summary_profile_color">Accentfärg för din AniList-profil</string>
+
+    <!-- Label for the list row order picker on the account settings screen -->
+    <string name="account_title_row_order">Listans radordning</string>
+
+    <!-- Helper text under the list row order picker -->
+    <string name="account_summary_row_order">Ordningen på poster i dina anime- och mangalistor</string>
+
+    <!-- Label for the airing notifications switch on the account settings screen -->
+    <string name="account_title_airing_notifications">Aviseringar om nya avsnitt</string>
+
+    <!-- Helper text under the airing notifications switch -->
+    <string name="account_summary_airing_notifications">Få ett meddelande när en serie du följer sänder ett nytt avsnitt</string>
+
+    <!-- Label for the server-side adult content switch on the account settings screen -->
+    <string name="account_title_display_adult_content">Vuxet innehåll (AniList-konto)</string>
+
+    <!-- Helper text clarifying the adult content switch edits the AniList account, separate from the app local setting -->
+    <string name="account_summary_display_adult_content">Styr om vuxet innehåll visas på ditt AniList-konto. Detta är separat från appens lokala inställning för vuxet innehåll.</string>
+
+    <!-- Value shown for list row order when the server has not set a custom order -->
+    <string name="account_row_order_default">Standard</string>
+
+    <!-- Title of the dialog confirming discarding unsaved account changes -->
+    <string name="account_dialog_discard_title">Ignorera ändringar?</string>
+
+    <!-- Body of the discard changes confirmation dialog -->
+    <string name="account_dialog_discard_message">Du har osparade kontouppdateringar. Ignorera dem och stäng?</string>
+
+    <!-- Positive action of the discard dialog; throws away the edits -->
+    <string name="account_action_discard">Ignorera</string>
+
+    <!-- Negative action of the discard dialog; returns to the form -->
+    <string name="account_action_keep_editing">Fortsätt redigera</string>
+
+    <!-- Save button label shown while a save is in flight -->
+    <string name="account_saving">Sparar…</string>
+
+    <!-- Loading caption shown while account settings are being fetched -->
+    <string name="account_loading">Laddar…</string>
+
+    <!-- Retry button next to the account settings error banner -->
+    <string name="account_action_retry">Försök igen</string>
+
+    <!-- Generic error shown when the account settings request fails -->
+    <string name="account_error_generic">Det gick inte att slutföra begäran</string>
+
+    <!-- Screen-reader description for the account settings loading indicator -->
+    <string name="account_loading_content_description">Laddar kontoinställningar</string>
+
+    <!-- Screen-reader description for the account settings saving indicator -->
+    <string name="account_saving_content_description">Sparar kontoinställningar</string>
 </resources>

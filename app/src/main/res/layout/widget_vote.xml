@@ -1,15 +1,9 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable name="onClickEvent" type="android.view.View.OnClickListener" />
-    </data>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
         <ViewFlipper
             android:id="@+id/widget_thumb_up_flipper"
@@ -17,11 +11,10 @@
             android:focusable="true"
             android:inAnimation="@android:anim/slide_in_left"
             android:outAnimation="@android:anim/slide_out_right"
-            android:padding="@dimen/spacing_small"
+            android:padding="@dimen/lg_margin"
             android:foreground="?selectableItemBackground"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClickListener="@{onClickEvent}">
+            android:layout_height="wrap_content">
 
             <com.mxt.anitrend.base.custom.view.text.SingleLineTextView
                 android:id="@+id/widget_thumb_up"
@@ -33,19 +26,18 @@
                 tools:drawableStart="@drawable/ic_thumb_up_grey_600_18dp"
                 tools:text=" 5"
                 />
-
-            <com.github.rahatarmanahmed.cpv.CircularProgressView
-                android:layout_width="@dimen/xl_margin"
-                android:layout_height="@dimen/xl_margin"
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:layout_width="@dimen/widget_spinner_compact_size"
+                android:layout_height="@dimen/widget_spinner_compact_size"
                 android:layout_gravity="center"
-                app:cpv_animAutostart="true"
-                app:cpv_color="?colorAccent"
-                app:cpv_indeterminate="true" />
+                android:indeterminate="true"
+                app:indicatorColor="?colorAccent"
+                app:indicatorSize="@dimen/widget_spinner_compact_size" />
 
         </ViewFlipper>
 
-        <android.support.v4.widget.Space
-            android:layout_width="@dimen/spacing_medium"
+        <Space
+            android:layout_width="@dimen/spacing_xs"
             android:layout_height="wrap_content" />
 
         <ViewFlipper
@@ -54,11 +46,10 @@
             android:focusable="true"
             android:inAnimation="@android:anim/slide_in_left"
             android:outAnimation="@android:anim/slide_out_right"
-            android:padding="@dimen/spacing_small"
+            android:padding="@dimen/lg_margin"
             android:foreground="?selectableItemBackground"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClickListener="@{onClickEvent}">
+            android:layout_height="wrap_content">
 
             <com.mxt.anitrend.base.custom.view.text.SingleLineTextView
                 android:id="@+id/widget_thumb_down"
@@ -70,17 +61,14 @@
                 tools:drawableStart="@drawable/ic_thumb_down_grey_600_18dp"
                 tools:text=" 5"
                 />
-
-            <com.github.rahatarmanahmed.cpv.CircularProgressView
-                android:layout_width="@dimen/xl_margin"
-                android:layout_height="@dimen/xl_margin"
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:layout_width="@dimen/widget_spinner_compact_size"
+                android:layout_height="@dimen/widget_spinner_compact_size"
                 android:layout_gravity="center"
-                app:cpv_animAutostart="true"
-                app:cpv_color="?colorAccent"
-                app:cpv_indeterminate="true" />
+                android:indeterminate="true"
+                app:indicatorColor="?colorAccent"
+                app:indicatorSize="@dimen/widget_spinner_compact_size" />
 
         </ViewFlipper>
 
     </LinearLayout>
-
-</layout>

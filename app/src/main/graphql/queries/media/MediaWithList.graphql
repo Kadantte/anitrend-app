@@ -1,0 +1,34 @@
+query MediaWithList($id: Int, $type: MediaType, $onList: Boolean, $scoreFormat: ScoreFormat = POINT_100) {
+  Media(id: $id, type: $type, onList: $onList) {
+    id
+    title {
+      ... MediaTitleFragment
+    }
+    coverImage {
+      ... MediaImageFragment
+    }
+    type
+    format
+    season
+    status(version: 2)
+    meanScore
+    averageScore
+    startDate {
+      ... FuzzyDateFragment
+    }
+    endDate {
+      ... FuzzyDateFragment
+    }
+    episodes
+    chapters
+    volumes
+    isAdult
+    isFavourite
+    nextAiringEpisode {
+      ... AiringScheduleFragment
+    }
+    mediaListEntry {
+      ... MediaListCoreFragment
+    }
+  }
+}

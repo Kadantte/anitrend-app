@@ -1,0 +1,6 @@
+fragment MediaListFragment on MediaList {
+  ... MediaListCoreFragment
+  media {
+    ... MediaCoreFragment
+  }
+}

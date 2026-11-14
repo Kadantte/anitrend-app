@@ -1,0 +1,30 @@
+query UserOverview($id: Int, $userName: String, $asHtml: Boolean = false) {
+  User(id: $id, name: $userName) {
+    id
+    name
+    avatar {
+      ... UserAvatarFragment
+    }
+    bannerImage
+    about(asHtml: $asHtml)
+    isFollowing
+    statistics {
+      anime {
+        ... UserStatisticsFragment
+      }
+      manga {
+        ... UserStatisticsFragment
+      }
+    }
+    stats {
+      favouredGenres {
+        genre
+        amount
+        meanScore
+        timeWatched
+      }
+    }
+    unreadNotificationCount
+    donatorTier
+  }
+}

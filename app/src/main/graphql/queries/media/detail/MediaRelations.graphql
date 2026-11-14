@@ -1,0 +1,15 @@
+query MediaRelations($id: Int!, $type: MediaType, $isAdult: Boolean) {
+  Media(id: $id, type: $type, isAdult: $isAdult) {
+    relations {
+      pageInfo {
+        ... PageInfoFragment
+      }
+      edges {
+        relationType(version: 2)
+        node {
+          ... MediaCoreFragment
+        }
+      }
+    }
+  }
+}

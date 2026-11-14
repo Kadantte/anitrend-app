@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ogaclejapan.smarttablayout.SmartTabLayout
+<!-- Pinned tab row for the profile pager. Sits on the highest surface
+     container tier so it stays visually anchored above the content. -->
+<com.google.android.material.tabs.TabLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/smart_tab"
+    style="@style/Widget.Material3.TabLayout.OnSurface"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
-    android:paddingBottom="@dimen/md_margin"
-    app:stl_dividerColor="@android:color/transparent"
-    app:stl_defaultTabTextColor="?attr/titleColor"
-    app:stl_defaultTabTextMinWidth="120dp"
-    app:stl_indicatorAlwaysInCenter="true"
-    app:stl_indicatorColor="?colorAccent"
-    app:stl_indicatorCornerRadius="1.5dp"
-    app:stl_indicatorInterpolation="smart"
-    app:stl_indicatorThickness="3dp"
-    app:stl_underlineColor="@color/black_transparent" />
+    android:layout_height="?attr/actionBarSize"
+
+    app:tabGravity="center"
+    app:tabIndicatorColor="?attr/colorPrimary"
+    app:tabIndicatorHeight="3dp"
+    app:tabMinWidth="0dp"
+    app:tabMode="scrollable"
+    app:tabSelectedTextColor="?attr/colorPrimary"
+    app:tabTextAppearance="?attr/textAppearanceLabelLarge"
+    app:tabTextColor="?attr/colorOnSurfaceVariant" />

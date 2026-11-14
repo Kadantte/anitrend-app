@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".view.activity.index.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppThemeLight.AppBarOverlay">
+        android:layout_height="wrap_content">
 
-        <include layout="@layout/custom_toolbar" />
+        <include
+            android:id="@+id/custom_toolbar"
+            layout="@layout/custom_toolbar" />
 
-        <include layout="@layout/custom_tab" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/main_nav_host"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:navGraph="@navigation/nav_root" />
 
-    <include layout="@layout/content_main" />
-
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

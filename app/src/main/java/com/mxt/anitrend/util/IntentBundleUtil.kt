@@ -3,11 +3,10 @@ package com.mxt.anitrend.util
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.support.annotation.VisibleForTesting
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.ShareCompat
 import android.text.TextUtils
-
+import androidx.core.app.ShareCompat
+import androidx.fragment.app.FragmentActivity
+import com.mxt.anitrend.util.markdown.RegexUtil
 import java.util.regex.Matcher
 
 /**
@@ -15,11 +14,12 @@ import java.util.regex.Matcher
  * Intent data formatter and helper methods
  */
 
-class IntentBundleUtil(private val intent: Intent) {
-
+class IntentBundleUtil(
+    private val intent: Intent,
+) {
     var sharedIntent: ShareCompat.IntentReader? = null
 
-    private val deepLinkMatcher: Matcher? by lazy {
+    private val deepLinkMatcher: Matcher? by lazy(LazyThreadSafetyMode.NONE) {
         RegexUtil.findIntentKeys(intentData?.path)
     }
 
@@ -27,13 +27,14 @@ class IntentBundleUtil(private val intent: Intent) {
 
     private val intentData: Uri? = intent.data
 
-    private fun hasDepth(key: String): Array<String>? {
-        return if (key.contains("/")) 
-            key.split("/".toRegex())
-                    .dropLastWhile {
-                        it.isEmpty()
-                    }.toTypedArray()
-        else null
+    private fun hasDepth(key: String?): Array<String>? = if (key?.contains("/") == true) {
+        key
+            .split("/".toRegex())
+            .dropLastWhile {
+                it.isEmpty()
+            }.toTypedArray()
+    } else {
+        null
     }
 
     private fun injectIntentParams() {
@@ -42,68 +43,88 @@ class IntentBundleUtil(private val intent: Intent) {
             val groupLimit = it.groupCount()
 
             var lastKey = it.group(groupLimit)
-            val splitKeys: Array<String>? = hasDepth(lastKey)
+            val splitKeys = hasDepth(lastKey)
 
             when (type) {
                 KeyUtil.DEEP_LINK_ACTIVITY -> {
-                    if (splitKeys != null)
+                    if (splitKeys != null) {
                         intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
-                    else
-                        intent.putExtra(KeyUtil.arg_id, lastKey.toLong())
+                    } else {
+                        intent.putExtra(KeyUtil.arg_id, lastKey?.toLong())
+                    }
                 }
-                KeyUtil.DEEP_LINK_USER -> when {
-                    TextUtils.isDigitsOnly(lastKey) -> intent.putExtra(KeyUtil.arg_id, lastKey.toLong())
-                    else -> {
-                        if (lastKey.contains("/"))
-                            lastKey = lastKey.replace("/", "")
-                        intent.putExtra(KeyUtil.arg_userName, lastKey)
+                KeyUtil.DEEP_LINK_USER -> {
+                    val keys = lastKey?.split("/", limit = 2)
+                    val userName = keys?.getOrNull(0)
+                    when {
+                        // The identity is the first path segment: a numeric
+                        // segment is a user id, not a username, even when the
+                        // animelist/mangalist suffix follows it (NFR-003).
+                        userName != null && TextUtils.isDigitsOnly(userName) ->
+                            intent.putExtra(KeyUtil.arg_id, userName.toLong())
+                        else -> intent.putExtra(KeyUtil.arg_userName, userName)
+                    }
+                    when (keys?.getOrNull(1)?.lowercase()) {
+                        "animelist" -> intent.putExtra(KeyUtil.arg_mediaType, KeyUtil.ANIME)
+                        "mangalist" -> intent.putExtra(KeyUtil.arg_mediaType, KeyUtil.MANGA)
                     }
                 }
                 KeyUtil.DEEP_LINK_MANGA -> {
-                    if (splitKeys != null)
+                    if (splitKeys != null) {
                         intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
-                    else
-                        intent.putExtra(KeyUtil.arg_id, lastKey.toLong())
+                    } else {
+                        intent.putExtra(KeyUtil.arg_id, lastKey?.toLong())
+                    }
                     intent.putExtra(KeyUtil.arg_mediaType, KeyUtil.MANGA)
                 }
                 KeyUtil.DEEP_LINK_ANIME -> {
-                    if (splitKeys != null)
+                    if (splitKeys != null) {
                         intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
-                    else
-                        intent.putExtra(KeyUtil.arg_id, lastKey.toLong())
+                    } else {
+                        intent.putExtra(KeyUtil.arg_id, lastKey?.toLong())
+                    }
                     intent.putExtra(KeyUtil.arg_mediaType, KeyUtil.ANIME)
                 }
-                KeyUtil.DEEP_LINK_CHARACTER -> if (splitKeys != null)
-                    intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
-                else
-                    intent.putExtra(KeyUtil.arg_id, lastKey.toLong())
+                KeyUtil.DEEP_LINK_CHARACTER ->
+                    if (splitKeys != null) {
+                        intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
+                    } else {
+                        intent.putExtra(KeyUtil.arg_id, lastKey?.toLong())
+                    }
 
-                KeyUtil.DEEP_LINK_ACTOR -> if (splitKeys != null)
-                    intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
-                else
-                    intent.putExtra(KeyUtil.arg_id, lastKey.toLong())
+                KeyUtil.DEEP_LINK_ACTOR ->
+                    if (splitKeys != null) {
+                        intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
+                    } else {
+                        intent.putExtra(KeyUtil.arg_id, lastKey?.toLong())
+                    }
 
-                KeyUtil.DEEP_LINK_STAFF -> if (splitKeys != null)
-                    intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
-                else
-                    intent.putExtra(KeyUtil.arg_id, lastKey.toLong())
+                KeyUtil.DEEP_LINK_STAFF ->
+                    if (splitKeys != null) {
+                        intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
+                    } else {
+                        intent.putExtra(KeyUtil.arg_id, lastKey?.toLong())
+                    }
 
-                KeyUtil.DEEP_LINK_STUDIO -> if (splitKeys != null)
-                    intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
-                else
-                    intent.putExtra(KeyUtil.arg_id, lastKey.toLong())
+                KeyUtil.DEEP_LINK_STUDIO ->
+                    if (splitKeys != null) {
+                        intent.putExtra(KeyUtil.arg_id, splitKeys[0].toLong())
+                    } else {
+                        intent.putExtra(KeyUtil.arg_id, lastKey?.toLong())
+                    }
             }
         }
     }
 
     fun checkIntentData(context: FragmentActivity) {
-        if (context.intent?.hasExtra(KeyUtil.arg_shortcut_used) == true && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
+        if (context.intent?.hasExtra(KeyUtil.arg_shortcut_used) == true && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             ShortcutUtil.reportShortcutUsage(context, context.intent.getIntExtra(KeyUtil.arg_shortcut_used, KeyUtil.SHORTCUT_SEARCH))
+        }
 
-        if (!intentAction.isNullOrEmpty() && intentAction == Intent.ACTION_SEND)
-            sharedIntent = ShareCompat.IntentReader.from(context)
-        else if (deepLinkMatcher != null)
+        if (!intentAction.isNullOrEmpty() && intentAction == Intent.ACTION_SEND) {
+            sharedIntent = ShareCompat.IntentReader(context)
+        } else if (deepLinkMatcher != null) {
             injectIntentParams()
+        }
     }
 }
-

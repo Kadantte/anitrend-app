@@ -1,0 +1,30 @@
+query MediaStats($id: Int!, $type: MediaType, $isAdult: Boolean) {
+  Media(id: $id, type: $type, isAdult: $isAdult) {
+    type
+    externalLinks {
+      id
+      url
+      site
+    }
+    stats {
+      scoreDistribution {
+        score
+        amount
+      }
+      statusDistribution {
+        status
+        amount
+      }
+    }
+    rankings {
+      id
+      rank
+      type
+      format
+      year
+      season
+      allTime
+      context
+    }
+  }
+}

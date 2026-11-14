@@ -1,0 +1,121 @@
+name: version-update
+
+on:
+  repository_dispatch:
+    types: [version-update-and-push]
+
+permissions:
+  contents: read
+
+jobs:
+  version-update:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          ref: develop
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Configure properties
+        run: bash .github/scripts/setup-config.sh
+
+      - name: Generate version information
+        id: version
+        run: |
+          CURRENT_VERSION=""
+          if [[ -f gradle/version.properties ]]; then
+            CURRENT_VERSION="$(grep '^version=' gradle/version.properties | cut -d'=' -f2)"
+          fi
+
+          PREVIOUS_VERSION_DISPLAY="$CURRENT_VERSION"
+          if [[ -z "$PREVIOUS_VERSION_DISPLAY" ]]; then
+            PREVIOUS_VERSION_DISPLAY="unknown"
+          fi
+
+          # Extract version from event payload
+          VERSION="${{ github.event.client_payload.version }}"
+          echo "$VERSION" > VERSION
+
+          {
+            printf 'previous_version=%s\n' "$CURRENT_VERSION"
+            printf 'previous_version_display=%s\n' "$PREVIOUS_VERSION_DISPLAY"
+            printf 'next_version=%s\n' "$VERSION"
+          } >> "$GITHUB_OUTPUT"
+
+          # Parse and compute code
+          IFS='.' read -ra VER <<< "$VERSION"
+          MAJOR=$((VER[0] * 1000000000))
+          MINOR=$((VER[1] * 1000000))
+          PATCH=$((VER[2] * 1000))
+          CODE=$((MAJOR + MINOR + PATCH))
+
+          # Create version.properties
+          mkdir -p gradle
+          cat <<EOF > gradle/version.properties
+          version=$VERSION
+          code=$CODE
+          name=v$VERSION
+          EOF
+
+          # Create version.json
+          mkdir -p app/.meta
+          cat <<EOF > app/.meta/version.json
+          {
+            "code": $CODE,
+            "migration": false,
+            "minSdk": 21,
+            "releaseNotes": "",
+            "version": "$VERSION",
+            "appId": "com.mxt.anitrend"
+          }
+          EOF
+
+      - name: Preview created files
+        run: |
+          echo "Preview version.properties:"
+          cat gradle/version.properties
+          echo "Preview version.json:"
+          cat app/.meta/version.json
+
+      - name: Clean up temporary files
+        run: rm VERSION
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          signoff: true
+          delete-branch: true
+          commit-message: "automation: bump version ${{ steps.version.outputs.previous_version_display }} -> ${{ steps.version.outputs.next_version }}"
+          author: "Author <actions@github.com>"
+          title: "platform: bump version ${{ steps.version.outputs.previous_version_display }} -> ${{ steps.version.outputs.next_version }}"
+          body: |
+            This PR was automatically generated to bump AniTrend version metadata.
+
+            - Previous version: `${{ steps.version.outputs.previous_version_display }}`
+            - New version: `${{ steps.version.outputs.next_version }}`
+            - Updated files:
+              - `gradle/version.properties`
+              - `app/.meta/version.json`
+          branch: platform/update-version-meta-data
+          labels: "skip-changelog"
+          assignees: "wax911"
+          reviewers: "wax911"
+
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: gh pr merge --auto --squash "${{ steps.cpr.outputs.pull-request-number }}"

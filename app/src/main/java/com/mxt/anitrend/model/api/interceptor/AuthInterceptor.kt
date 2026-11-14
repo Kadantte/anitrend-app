@@ -1,39 +1,36 @@
 package com.mxt.anitrend.model.api.interceptor
 
-import android.content.Context
-import android.util.Log
-
 import com.mxt.anitrend.BuildConfig
 import com.mxt.anitrend.base.custom.async.WebTokenRequest
-import com.mxt.anitrend.util.ApplicationPref
-
-import java.io.IOException
-
+import com.mxt.anitrend.util.Settings
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
+import timber.log.Timber
+import java.io.IOException
 
 /**
  * Created by max on 2017/06/14.
  * Auth injector interceptor
  */
 
-class AuthInterceptor(context: Context) : Interceptor {
-
-    private val applicationPref by lazy {
-        ApplicationPref(context)
-    }
-
+class AuthInterceptor(
+    private val settings: Settings,
+) : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (applicationPref.isAuthenticated) {
-            if (WebTokenRequest.getInstance() != null) {
-                val builder = chain.request().newBuilder()
-                        .header(BuildConfig.HEADER_KEY, WebTokenRequest.getInstance().header)
+        if (settings.isAuthenticated) {
+            val token = WebTokenRequest.getInstance()
+            if (token != null) {
+                val builder =
+                    chain
+                        .request()
+                        .newBuilder()
+                        .header(BuildConfig.HEADER_KEY, token.header)
                 val request = builder.build()
                 return chain.proceed(request)
-            } else
-                Log.e("AuthInterceptor", "Authentication reference is null, this should not happen under normal conditions")
+            } else {
+                Timber.tag("AuthInterceptor").e("Authentication reference is null, this should not happen under normal conditions")
+            }
         }
         return chain.proceed(chain.request())
     }
